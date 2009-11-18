@@ -652,10 +652,19 @@ public class Gleitpunktzahl {
 		/*
 		 * NaN
 		 */
-		if(r.exponent.isNull())
+		if(r.exponent.isNull() && this.exponent.isNull())
 		{
 			erg.exponent.setInt(maxExponent);
 			erg.mantisse.setInt(1);
+			return erg;
+		}
+		/*
+		 * infinity
+		 */
+		else if(r.exponent.isNull())
+		{
+			erg.mantisse.setBits(false);
+			erg.exponent.setBits(true);
 			return erg;
 		}
 		/*
