@@ -184,10 +184,96 @@ public class Aufgabe1 {
 			} else {
 				System.out.println("    Richtiges Ergebnis\n");
 			} 
+			
+			// 6. Test: Bitweise Division 
+			//          a/b : a = b both leading 0
+		    System.out.println("    6. Test: Bitweise Division - a/b: a=b both leading 0");
+			a = new BitFeld(10);
+			b = new BitFeld(10);
+			a.setInt(23);
+			b.setInt(23);
+
+			// Referenzwerte setzen
+			checkref = new BitFeld(12,false);
+			checkref.bits[checkref.getSize() -1 ] = true;
+
+			// Berechnung mit der Methode des Studenten durchfuehren
+			erg = a.div(b);
+
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			
+			// 7. Test: Bitweise Division 
+			//          a/b : a > b both leading 0
+		    System.out.println("    7. Test: Bitweise Division - a/b: a>b both leading 0");
+			a = new BitFeld(10);
+			b = new BitFeld(10);
+			a.setInt(49);
+			b.setInt(7);
+
+			// Referenzwerte setzen
+			checkref = new BitFeld(12,false);
+			checkref.setInt(7);
+			while(!checkref.bits[checkref.getSize()-1])
+				checkref.shiftLeft(false);
+
+			// Berechnung mit der Methode des Studenten durchfuehren
+			erg = a.div(b);
+
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 8. Test: Bitweise Division 
+			//          a/b : a < b both leading 0
+		    System.out.println("    8. Test: Bitweise Division - a/b: a<b both leading 0");
+			a = new BitFeld(10);
+			b = new BitFeld(10);
+			a.setInt(6);
+			b.setInt(12);
+
+			// Referenzwerte setzen
+			checkref = new BitFeld(12,false);
+			checkref.setInt(1);
+			while(!checkref.bits[checkref.getSize()-2])
+				checkref.shiftLeft(false);
+
+			// Berechnung mit der Methode des Studenten durchfuehren
+			erg = a.div(b);
+
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
 			e.printStackTrace();
 		}
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		System.out.print("\nTests für die Klasse Gleitpunktzahl sind ggf. selbst zu erstellen!!\n");
 		
