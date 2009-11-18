@@ -267,14 +267,6 @@ public class Aufgabe1 {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
 		System.out.print("\nTests für die Klasse Gleitpunktzahl sind ggf. selbst zu erstellen!!\n");
 		
 		/**
