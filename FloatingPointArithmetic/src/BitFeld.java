@@ -383,6 +383,9 @@ public class BitFeld{
   public BitFeld div(BitFeld b) {
 	  assert b.size == this.size;
 	  
+	  //if b is null should be checked in the caller
+	  assert !b.isNull();
+	  
 	  BitFeld erg = new BitFeld(size+2,false);
 	  BitFeld divisor = new BitFeld(size,false);
 	  BitFeld dividend = new BitFeld(size,false);
@@ -409,6 +412,7 @@ public class BitFeld{
 		  }
 		  
 		  dividend.shiftLeft(currentDigit >= 0 ? this.bits[currentDigit]:false);
+		  currentDigit--;
 	  }
 	  
 	  
