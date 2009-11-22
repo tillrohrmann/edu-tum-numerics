@@ -685,8 +685,8 @@ public class Gleitpunktzahl {
 		 */
 		if(r.exponent.isNull() && this.exponent.isNull())
 		{
-			erg.exponent.setInt(maxExponent);
-			erg.mantisse.setInt(1);
+			erg.exponent.setBits(true);
+			erg.mantisse.setBits(true);
 			return erg;
 		}
 		/*
@@ -715,12 +715,12 @@ public class Gleitpunktzahl {
 		
 		BitFeld tempExponent = this.exponent.add(offset);
 		BitFeld helper = new BitFeld(tempExponent.getSize());
-		helper.setInt(r.exponent.toInt());
+		helper.copy(r.exponent);
 		
 		/*
 		 * exponent underflow
 		 */
-		if(tempExponent.compareTo(helper) < 0)
+		if(tempExponent.compareTo(helper) <= 0)
 		{
 			erg.exponent.setBits(false);
 			erg.mantisse.setBits(false);
@@ -734,22 +734,37 @@ public class Gleitpunktzahl {
 			while(!newSignificand.bits[firstOne] && firstOne > 0)
 				firstOne--;
 			
+			helper.setInt(newSignificand.getSize()-1 - firstOne);
+			
 			/*
 			 * exponent underflow
 			 */
-			
-			if(tempExponent.toInt() - (newSignificand.getSize()-1 - firstOne) <= 0)
+			if(tempExponent.compareTo(helper) <= 0)
 			{
 				erg.mantisse.setBits(false);
 				erg.exponent.setBits(false);
 			}
-			else if(tempExponent.toInt() - ( newSignificand.getSize()-1 - firstOne) >= maxExponent){
+			
+			helper = tempExponent.sub(helper);
+			BitFeld me = new BitFeld(helper.getSize());
+			me.setBits(true);
+			
+			for(int i = me.getSize(); i > getAnzBitsExponent();i--)
+				me.shiftRight(false);
+			/*
+			 * exponent overflow
+			 */
+			if(me.compareTo(helper) <= 0){
 				erg.mantisse.setBits(false);
 				erg.exponent.setBits(true);
 			}
 			else{
-			
-				erg.exponent.setInt(tempExponent.toInt() - (newSignificand.getSize()-1 - firstOne));
+				
+				for(int i =0; i< newSignificand.getSize()-1 -firstOne;i++)
+					tempExponent.dec();
+				
+				for(int i =0; i < erg.exponent.getSize(); i++)
+					erg.exponent.bits[i] = tempExponent.bits[i];
 				
 				for(int i =0; i < newSignificand.getSize()-1 - firstOne;i++)
 					newSignificand.shiftLeft(false);
