@@ -735,13 +735,17 @@ public class Gleitpunktzahl {
 				firstOne--;
 			
 			/*
-			 * exponent overflow
+			 * exponent underflow
 			 */
 			
-			if(tempExponent.toInt() - (newSignificand.getSize()-1 - firstOne) >= maxExponent)
+			if(tempExponent.toInt() - (newSignificand.getSize()-1 - firstOne) <= 0)
 			{
 				erg.mantisse.setBits(false);
-				erg.exponent.setInt(maxExponent);
+				erg.exponent.setBits(false);
+			}
+			else if(tempExponent.toInt() - ( newSignificand.getSize()-1 - firstOne) >= maxExponent){
+				erg.mantisse.setBits(false);
+				erg.exponent.setBits(true);
 			}
 			else{
 			
