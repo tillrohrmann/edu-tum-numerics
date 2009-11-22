@@ -46,15 +46,22 @@ public class Aufgabe1 {
 			System.exit(1);
 		}
 	}
-
-	private static void test() {
+	
+	private static void test_BitFeld()
+	{
+		test_BitFeld_mul();
+		test_BitFeld_div();
+	}
+	
+	private static void test_BitFeld_mul()
+	{
 		try {
 			/*****************************/
-			/* Test der Klasse BitFeld   */
+			/* Test der Klasse BitFeld mul  */
 			/*****************************/
 			
 		    System.out.println("-----------------------------------------");
-		    System.out.println("Test der Klasse BitFeld");
+		    System.out.println("Test der Klasse BitFeld mul");
 		    
 			BitFeld a;
 			BitFeld b;
@@ -183,11 +190,33 @@ public class Aufgabe1 {
 				System.out.println("        ref: "+checkref+"\n");
 			} else {
 				System.out.println("    Richtiges Ergebnis\n");
-			} 
+			}
 			
-			// 6. Test: Bitweise Division 
+		}catch (Exception e) {
+			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private static void test_BitFeld_div()
+	{
+		BitFeld a;
+		BitFeld b;
+		BitFeld checkref;
+		BitFeld erg;
+		
+		try{
+			/*****************************/
+			/* Test der Klasse BitFeld div  */
+			/*****************************/
+			
+		    System.out.println("-----------------------------------------");
+		    System.out.println("Test der Klasse BitFeld div");
+			
+			// 1. Test: Bitweise Division 
 			//          a/b : a = b both leading 0
-		    System.out.println("    6. Test: Bitweise Division - a/b: a=b both leading 0");
+		    System.out.println("    1. Test: Bitweise Division - a/b: a=b both leading 0");
 			a = new BitFeld(10);
 			b = new BitFeld(10);
 			a.setInt(23);
@@ -210,9 +239,9 @@ public class Aufgabe1 {
 			}
 			
 			
-			// 7. Test: Bitweise Division 
+			// 2. Test: Bitweise Division 
 			//          a/b : a > b both leading 0
-		    System.out.println("    7. Test: Bitweise Division - a/b: a>b both leading 0");
+		    System.out.println("    2. Test: Bitweise Division - a/b: a>b both leading 0");
 			a = new BitFeld(10);
 			b = new BitFeld(10);
 			a.setInt(49);
@@ -236,9 +265,9 @@ public class Aufgabe1 {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 			
-			// 8. Test: Bitweise Division 
+			// 3. Test: Bitweise Division 
 			//          a/b : a < b both leading 0
-		    System.out.println("    8. Test: Bitweise Division - a/b: a<b both leading 0");
+		    System.out.println("    3. Test: Bitweise Division - a/b: a<b both leading 0");
 			a = new BitFeld(10);
 			b = new BitFeld(10);
 			a.setInt(6);
@@ -267,11 +296,374 @@ public class Aufgabe1 {
 			e.printStackTrace();
 		}
 		
-		System.out.print("\nTests für die Klasse Gleitpunktzahl sind ggf. selbst zu erstellen!!\n");
+	}
+	
+	
+	
+	private static void test_Gleitpunktzahl()
+	{
+		test_Gleitpunktzahl_mul();
+		test_Gleitpunktzahl_div();
+	}
+	
+	private static void test_Gleitpunktzahl_mul()
+	{
+		Gleitpunktzahl a;
+		Gleitpunktzahl b;
+		Gleitpunktzahl checkref;
+		Gleitpunktzahl erg;
 		
-		/**
-		 *  optional TODO Die Tests an Klasse Gleitpunktzahl sind ggf. selbst zu erstellen.
-		 **/
+		try{
+			/*****************************/
+			/* Test der Klasse Gleitpunktzahl mult  */
+			/*****************************/
+			
+		    System.out.println("-----------------------------------------");
+		    System.out.println("Test der Klasse Gleitpunktzahl mult");
+			
+			// 1. Test: Multiplikation 0*0 = 0
+		    System.out.println("    1. Test: Multiplikation 0*0 = 0");
+			a = new Gleitpunktzahl(0);
+			b = new Gleitpunktzahl(0);
+
+			// Referenzwerte setzen
+			checkref = new Gleitpunktzahl(0);
+
+			// Berechnung mit der Methode des Studenten durchfuehren
+			
+			erg = a.mult(b);
+
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 2. Test: Multiplikation 0*x = 0
+			System.out.println("	2. Test: Multiplikation 0*x = 0");
+			a = new Gleitpunktzahl(0);
+			b = new Gleitpunktzahl(12.34);
+			
+			checkref = new Gleitpunktzahl(0);
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			
+			// 3. Test: Multiplikation x*0 = 0
+			System.out.println("	3. Test: Multiplikation x*0 = 0");
+			b = new Gleitpunktzahl(0);
+			a = new Gleitpunktzahl(12.34);
+			
+			checkref = new Gleitpunktzahl(0);
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 4. Test: Multiplikation x*y = z
+			System.out.println("	4. Test: Multiplikation x*y = z");
+			a = new Gleitpunktzahl(12.34);
+			b = new Gleitpunktzahl(34.56);
+			
+			checkref = new Gleitpunktzahl(a.toDouble()*b.toDouble());
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 5. Test: Multiplikation -x*y = -z
+			System.out.println("	5. Test: Multiplikation -x*y = -z");
+			a = new Gleitpunktzahl(-12.34);
+			b = new Gleitpunktzahl(34.56);
+			
+			checkref = new Gleitpunktzahl(a.toDouble()*b.toDouble());
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 6. Test: Multiplikation x*y = infinity
+			System.out.println("	6. Test: Multiplikation x*y = +infinity");
+			a = new Gleitpunktzahl();
+			b = new Gleitpunktzahl();
+			
+			a.mantisse.setBits(true);
+			a.exponent.setInt((a.getMaxExponent()- a.getExpOffset())/2 + a.getExpOffset());
+			b.mantisse.setBits(true);
+			b.exponent.setInt((a.getMaxExponent()- a.getExpOffset())/2-1 + a.getExpOffset());
+			
+			
+			checkref = new Gleitpunktzahl();
+			checkref.mantisse.setBits(false);
+			checkref.exponent.setBits(true);
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			
+			// 7. Test: Multiplikation x*y = z
+			System.out.println("	7. Test: Multiplikation x*y = z");
+			a = new Gleitpunktzahl();
+			b = new Gleitpunktzahl();
+			
+			a.mantisse.setInt(1<< a.getAnzBitsMantisse()-1);
+			a.exponent.setInt((a.getMaxExponent()- a.getExpOffset())/2 + a.getExpOffset());
+			b.mantisse.setInt(1<< a.getAnzBitsMantisse()-1);
+			b.exponent.setInt((a.getMaxExponent()- a.getExpOffset())/2-1 + a.getExpOffset());
+			
+			
+			checkref = new Gleitpunktzahl(a.toDouble()*b.toDouble());
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 8. Test: Multiplikation x*y = 0
+			System.out.println("	8. Test: Multiplikation x*y = 0");
+			a = new Gleitpunktzahl(1);
+			b = new Gleitpunktzahl(1);
+			
+			a.exponent.setInt(a.getExpOffset()/2);
+			b.exponent.setInt(a.getExpOffset()/2+1);
+			
+			checkref = new Gleitpunktzahl(0);
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 9. Test: Multiplikation x*y != 0
+			System.out.println("	9. Test: Multiplikation x*y != 0");
+			a = new Gleitpunktzahl(1);
+			b = new Gleitpunktzahl(1);
+			
+			a.exponent.setInt(a.getExpOffset()/2+1);
+			b.exponent.setInt(a.getExpOffset()/2+1);
+			
+			checkref = new Gleitpunktzahl(a.toDouble() * b.toDouble());
+			
+			erg = a.mult(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+		} catch (Exception e) {
+			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	private static void test_Gleitpunktzahl_div()
+	{
+		Gleitpunktzahl a;
+		Gleitpunktzahl b;
+		Gleitpunktzahl erg;
+		Gleitpunktzahl checkref;
+		
+		try{
+			/*
+			 * Tests the Gleitpunkt division
+			 */
+			
+			 System.out.println("-----------------------------------------");
+			 System.out.println("Test der Klasse Gleitpunktzahl div");
+			
+			// 1. Test: Multiplikation 0/x =0
+			System.out.println("	1. Test: Division 0/x = 0");
+			a = new Gleitpunktzahl(0);
+			b = new Gleitpunktzahl(12.34);
+
+			checkref = new Gleitpunktzahl(a.toDouble() / b.toDouble());
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 2. Test: Multiplikation 0/0 =NaN
+			System.out.println("	2. Test: Division 0/0 = NaN");
+			a = new Gleitpunktzahl(0);
+			b = new Gleitpunktzahl(0);
+		
+			checkref = new Gleitpunktzahl();
+			
+			checkref.mantisse.setInt(1);
+			checkref.exponent.setBits(true);
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 3. Test: Multiplikation x/y = z
+			System.out.println("	3. Test: Division x/y = z");
+			a = new Gleitpunktzahl(12.213462561);
+			b = new Gleitpunktzahl(57.2345176764);
+		
+			checkref = new Gleitpunktzahl(a.toDouble() / b.toDouble());
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 4. Test: Multiplikation x/0 = infinity
+			System.out.println("	4. Test: Division x/0 = infinty");
+			a = new Gleitpunktzahl(12.213462561);
+			b = new Gleitpunktzahl(0);
+		
+			checkref = new Gleitpunktzahl();
+			checkref.mantisse.setBits(false);
+			checkref.exponent.setBits(true);
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 5. Test: Multiplikation x/y = infinity
+			System.out.println("	5. Test: Division x/y = infinty");
+			a = new Gleitpunktzahl(1);
+			b = new Gleitpunktzahl(1);
+			
+			a.exponent.setInt((a.getMaxExponent()+a.getExpOffset())/2);
+			b.exponent.setInt((a.getMaxExponent()-a.getExpOffset())/2 -1);
+			
+			checkref = new Gleitpunktzahl();
+			checkref.mantisse.setBits(false);
+			checkref.exponent.setBits(true);
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 6. Test: Multiplikation x/y = infinity
+			System.out.println("	6. Test: Division x/y =0");
+			a = new Gleitpunktzahl(1);
+			b = new Gleitpunktzahl(1);
+			
+			a.exponent.setInt(a.getExpOffset());
+			b.exponent.setInt(a.exponent.toInt() + a.getExpOffset());
+			
+			checkref = new Gleitpunktzahl();
+			checkref.mantisse.setBits(false);
+			checkref.exponent.setBits(false);
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+		}catch(Exception e){
+			System.out.println("Exception bei der Auswertung des Ergebnis!!");
+			e.printStackTrace();
+		}
+	}
+
+	private static void test() {
+		
+		test_BitFeld();
+		test_Gleitpunktzahl();
 	}
 
 }

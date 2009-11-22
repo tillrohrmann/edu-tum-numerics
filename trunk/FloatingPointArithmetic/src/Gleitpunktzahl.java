@@ -68,6 +68,22 @@ public class Gleitpunktzahl {
 	public int getAnzBitsExponent() {
 		return this.exponent.getSize();
 	}
+	
+	/**
+	 * Returns the max exponent
+	 * @return
+	 */
+	public int getMaxExponent()	{
+		return maxExponent;
+	}
+	
+	/**
+	 * This function return the exponent offset
+	 * @return
+	 */
+	public int getExpOffset(){
+		return expOffset;
+	}
 
 	/**
 	 * erzeugt eine Gleitpunktzahl ohne Anfangswert. Die Bitfelder fuer Mantisse
@@ -466,6 +482,21 @@ public class Gleitpunktzahl {
 		 */
 		return 0;
 
+	}
+	
+	/**
+	 * This functions compares to Gleitpunktzahlen
+	 * @param number
+	 * @return
+	 */
+	public int compareTo(Gleitpunktzahl number)
+	{
+		if(this.vorzeichen ^ number.vorzeichen)
+			return this.vorzeichen? -1 : 1;
+		else if(this.exponent.compareTo(number.exponent) != 0)
+			return this.exponent.compareTo(number.exponent);
+		else
+			return this.mantisse.compareTo(number.mantisse);
 	}
 
 	/** subtrahiert vom aktuellen Objekt die Gleitpunktzahl r */
