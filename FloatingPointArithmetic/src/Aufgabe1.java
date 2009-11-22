@@ -556,7 +556,7 @@ public class Aufgabe1 {
 		
 			checkref = new Gleitpunktzahl();
 			
-			checkref.mantisse.setInt(1);
+			checkref.mantisse.setBits(true);
 			checkref.exponent.setBits(true);
 			
 			erg = a.div(b);
@@ -681,6 +681,25 @@ public class Aufgabe1 {
 			
 			erg = a.div(b);
 			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			
+			// 9. Test: Multiplikation x/y = inf
+			System.out.println("	9. Test: Division x/y =z");
+			  a = new Gleitpunktzahl(Math.pow(2, 122)); 
+              b = new Gleitpunktzahl(31 * Math.pow(2, -10));
+			
+			checkref = new Gleitpunktzahl(a.toDouble()/b.toDouble());
+			
+			erg = a.div(b);
+	
 			// Test, ob Ergebnis korrekt
 			if(erg.compareTo(checkref)!=0) {
 				System.out.println("    FEHLER!");

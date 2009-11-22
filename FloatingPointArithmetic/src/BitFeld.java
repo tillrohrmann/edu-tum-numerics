@@ -191,6 +191,22 @@ public class BitFeld{
       return 0;
     }
   }
+  /**
+   * This functions decrements the bitfield by one. The Bitfield has to be greater than 0
+   * @return
+   */
+  public int dec(){
+	  for(int i =0; i< this.getSize();i++){
+		  if(bits[i]){
+			  bits[i] = false;
+			  break;
+		  }
+		  else
+			  bits[i] = true;
+	  }
+	  
+	  return 0; 
+  }
 
   /** addiert zum als natuerliche Zahl interpretierten
     * Bitfeld das Bitfeld b. Beide Bitfelder muessen gleich
