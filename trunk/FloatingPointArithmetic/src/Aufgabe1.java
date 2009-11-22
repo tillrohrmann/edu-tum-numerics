@@ -587,7 +587,7 @@ public class Aufgabe1 {
 			} else {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
-			
+	
 			// 4. Test: Multiplikation x/0 = infinity
 			System.out.println("	4. Test: Division x/0 = infinty");
 			a = new Gleitpunktzahl(12.213462561);
@@ -631,7 +631,7 @@ public class Aufgabe1 {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 			
-			// 6. Test: Multiplikation x/y = infinity
+			// 6. Test: Multiplikation x/y = 0
 			System.out.println("	6. Test: Division x/y =0");
 			a = new Gleitpunktzahl(1);
 			b = new Gleitpunktzahl(1);
@@ -654,6 +654,41 @@ public class Aufgabe1 {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 			
+			// 7. Test: Multiplikation x/y = 0
+			System.out.println("	7. Test: Division x/y =0");
+			a = new Gleitpunktzahl(1f / Math.pow(2, 125)); 
+            b = new Gleitpunktzahl(5);
+			
+			checkref = new Gleitpunktzahl(a.toDouble()/b.toDouble());
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			// 8. Test: Multiplikation x/y = inf
+			System.out.println("	8. Test: Division x/y =inf");
+			 a = new Gleitpunktzahl(Math.pow(2, 125)); 
+             b = new Gleitpunktzahl(Math.pow(2, -10));
+			
+			checkref = new Gleitpunktzahl(a.toDouble()/b.toDouble());
+			
+			erg = a.div(b);
+			
+			// Test, ob Ergebnis korrekt
+			if(erg.compareTo(checkref)!=0) {
+				System.out.println("    FEHLER!");
+				System.out.println("        erg: "+erg);
+				System.out.println("        ref: "+checkref+"\n");
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
 		}catch(Exception e){
 			System.out.println("Exception bei der Auswertung des Ergebnis!!");
 			e.printStackTrace();
