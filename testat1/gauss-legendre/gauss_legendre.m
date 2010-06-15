@@ -10,24 +10,40 @@ function [ eigv,w ] = gauss_legendre( n )
     end
     
     eigv = sort(qr_iteration(C,2,100,1.0e-10,[]));
+       
+    % TODO: check whether it is faster to calculate the legendre polynomial
+    % in a general form and evaluate it for every xi instead of calculating
+    % it every time recursively
     
-    n=n-1;
+    w = zeros(n,1);
     
-    w = zeros(n+1,1);
-    for i = 1 : n+1
-        p_prev = 0; % p_{-1}
-        p_crnt = 1; % p_0
+    sumOfAllWeights = 0;
     
+    %w(i)==w(n-i) => calculating only half of the weights
+    for i = 1:n/2
+        
         xi = eigv(i);
         
-        for j = 1 : n+1
-           tmp = ((2*j - 1) * xi * p_crnt - (j-1) * p_prev) / j; 
-           p_prev = p_crnt; 
-           p_crnt = tmp;
-
+        %calculating P_{n+1}(x_{i})
+        p_prev = 0;
+        p_current = 1;
+     
+        
+        for j = 1:n 
+            p_next =((2*j-1)*xi*p_current-(j-1)*p_prev)/j;
+            p_prev = p_current;
+            p_current = p_next;
         end
         
-        w(i) = 2 * (1-xi^2) / (n*(xi * p_crnt - p_prev))^2;
+        w(i) = 2*(1-xi^2)/((2*n+1)*xi*p_current-n*p_prev)^2;
+        
+        sumOfAllWeights = sumOfAllWeights + 2*w(i);
+        
+        w(n-i+1) = w(i);
+    end
+    
+    if(mod(n,2)== 1)
+        w(floor(n/2)+1) = 2 - sumOfAllWeights;
     end
     
 end
