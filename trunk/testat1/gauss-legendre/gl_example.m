@@ -17,6 +17,15 @@ ylabel('Maximaler Fehler der Gewichte');
 grid;
 hold on;
 
+figure(3)
+set(gca,'FontSize',16);
+xlabel('n');
+ylabel('Summe der Gewichte');
+grid;
+hold on;
+
+wsum = zeros(n,1);
+
 for i=1:n
     [x,w] = gauss_legendre(i);
     [xexact,wexact] = gl(i);
@@ -26,8 +35,11 @@ for i=1:n
     [x_sort,I] = sort(x);
     [xexact_sort,Iex] = sort(xexact);
     
+   
     w_sort = w(I);
     wexact_sort = wexact(Iex);
+    
+    wsum(i) = sum(w)-max(w);
     
     %keyboard;
     
@@ -39,6 +51,8 @@ for i=1:n
         werr = [werr norm(w_sort-wexact_sort,inf)];
     end
     
+     xerr
+    
 end
 
 figure(1);
@@ -46,3 +60,6 @@ plot(1:n,xerr,'bo-','LineWidth',2,'MarkerFaceColor','m');
     
 figure(2)
 plot(1:n,werr,'bo-','LineWidth',2,'MarkerFaceColor','m');
+
+figure(3)
+plot(1:n,wsum,'bo-','LineWidth',2,'MarkerFaceColor','m');
