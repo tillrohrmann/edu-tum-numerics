@@ -1,0 +1,47 @@
+\section{Integration gewöhnlicher Differentialgleichungen}
+
+Die Behandlung von Differentialgleichungen spielt in der Numerik eine zentrale Rolle. Die mathematische Modellierung von zeitabhängigen Vorgängen führt vielfach auf Systeme von Differentialgleichungen (Biologie, Mechanik, Wirtschaft). Hängen die Zustandsgrößen nur von der Zeit ab, so spricht man von \emph{gewöhnlichen Differentialgleichungen}, hängen sie auch vom Ort ab, so spricht man von \emph{partiellen Differentialgleichungen}. Da die analytische Lösung meist nicht explizit berechenbar ist, ist man auf numerische Approximationen angewiesen.
+
+\subsection{Aufgabenstellung und einfache Einschrittverfahren}
+
+\begin{example} 
+	Idealisiertes Pendel
+	\begin{align}
+		\nonumber m l \phi &= -m g sin(\phi)\\
+		\nonumber \phi(0) &= \alpha\\
+		\nonumber \dot{\phi}(0) &= 0
+	\end{align}
+	Wobei $l$ die Länge des Pendels angibt, $m$ die Masse des Massepunkts am Ende des Pendels und $\phi$ die Auslenkung des Pendels.
+\end{example}
+
+\begin{example} 
+	Lotka-Volterra (Räuber-Beute-Modell)
+	\begin{align}
+		\nonumber\dot{y}_1 &= c_1y_1(1-\alpha_1y_2)\\
+		\nonumber\dot{y}_2 &= c_2y_2(\alpha_2y_1-1)
+	\end{align}
+		
+	Mit $c_1, c_2, \alpha_1, \alpha_2 > 0$ und Anfangswerten $y_1(0) = y^0_1$ und $y_2(0) = y^0_2$.
+\end{example}
+
+\begin{example} 
+	Dreikörperproblem (Euler 1772)
+\end{example}
+
+\begin{definition}[Definition IV.1]
+	Gesucht sei 
+	$y(t), t \in [t_0, T], y \in \mathbb{R}^n$ mit 
+	$$y^{(m)} = f(t, \dot{y}, \ddot{y}, ..., y^{(m-1)})$$
+	und
+	$$y(t_0) = t_0, \dot{y}(t_0) = z_1, ..., y^{(m-1})(t_0) = t_{m-1}.$$
+	
+	Dies definiert ein Anfangswertproblem m-ter Ordnung.
+\end{definition}
+
+Die meisten numerischen Verfahren betrachten Anfangswertprobleme 1. Ordnung. Dies ist ausreichend da jedes System der Größe n von m-ter Ordnung in ein System der Größe $n \cdot m$ von 1-ter Ordnung überführt werden kann.
+
+$$y_1(t) = y(t)$$
+$$y_2(t) = \dot{y}(t) = \dot{y}_1(t)$$
+$$y_3(t) = \ddot{y}(t) = \dot{y}_2(t)$$
+$$\vdots$$
+$$y_m(t) = y^{(m-1)}(t) = \dot{y}_{m-1}(t)$$
