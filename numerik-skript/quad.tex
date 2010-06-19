@@ -1,0 +1,83 @@
+\section{Numerische Quadratur}
+
+\subsection{}
+\subsection{Newton-Cotes Formeln}
+
+Die Newton-Cotes Formeln werden bezüglich $[0, 1]$ tabelliert und die Knoten sind äquidistant.
+
+\begin{definition}[Definition I.5] Newton-Cotes Formeln. Die Knoten sind definiert durch
+
+	\begin{tabular}{ l c c c c }
+		i) & $x_i = \frac{i}{n}$ & $i=0...n$ & $n \ge 1$ & (geschlossen) \\
+		ii) & $x_i = \frac{i+1}{n+2}$ & $i=0...n$ & $n \ge 0$ & (offen) \\
+	\end{tabular}
+	
+	In beiden Fällen sind die Gewichte definiert durch
+	
+	$$w_i = \int^1_0\!L_i(x) \,dx$$	
+	
+	wobei $L_i$ das Lagrange Interpolationspolynom zu den Knoten $x_i$ ist.
+	
+	$$L_i(x) = \prod_{j=0, j \ne i}^n \frac{x-x_i}{x_i-x_j}$$
+\end{definition}
+
+\begin{example} Simpson-Regel: $n=2$, geschlossen.
+
+	$$x_0 = 0$$ 
+	$$x_1 = 0.5$$
+	$$x_2 = 1$$
+	
+	$$w_0 = \int_0^1\!\frac{(x-\frac{1}{2})(x-1)}{(0-\frac{1}{2})(0-1)}\,dx = \frac{1}{6}$$ 
+	$$w_1 = \int_0^1\!\frac{(x-0)(x-1)}{(\frac{1}{2}-0)(\frac{1}{2}-1)}\,dx = \frac{2}{3}$$ 
+	$$w_2 = \frac{1}{6}$$
+	
+\end{example}
+
+\begin{theorem}[Satz I.3]
+	Exaktheitsgrad
+	
+	\begin{itemize}
+		\item[a)] Seien die Knoten $x_i, i = 0, .., n$ gegeben und definiert man die die Gewichte als $w_i = \int^1_0\!L_i(x) \,dx$, so ist der Exaktheitsgrad $m \ge n$.
+		\item[b)] Jede andere Wahl der Gewichte führt auf $m < n$.
+	\end{itemize}
+\end{theorem}
+
+\begin{theorem}[Satz I.4]
+	Die Newton-Cotes-Formeln sind exakt vom Grad $m = n + (n+1)\%2$
+\end{theorem}
+	
+	
+\subsection{Gaußquadratur}
+
+Bei den Newton-Cotes-Formeln sind die Knoten äquidistant verteilt. \emph{Frage:} Wie erhält man positive Gewichte? Wie erhält man für $n$ fest ein maximales $m$?
+
+\begin{theorem}[Satz I.5] Maximale Exaktheit. Es gibt keine Quadraturformeln, die mit $n+1$ Knoten alle Polynome vom Grad $m = 2(n+1)$ exakt integrieren.\end{theorem} 	
+
+\emph{Frage:} Gibt es eine Quadraturformel mit $n+1$ Knoten, die exakt vom Grad $2n+1$ ist?
+
+\begin{definition}[Definition I.6] Die Legendre-Polynome $P_n \in \mathcal{P}_n ([-1,1])$ sind definiert als 
+$$P_n(x) = \frac{(-1)^n}{2^n n!} \frac{d^n}{dx^n} (1-x^2)^n$$
+\end{definition}
+
+\begin{theorem}[Satz I.6] Eigenschaften der $P_n$
+	\begin{itemize}
+		\item[a)] alle Nullstellen von $P_n$ sind reell, verschieden und liegen in dem offenen Intervall $(-1, 1)$
+		\item[b)] die Polynome erfüllen die Orthogonalitätsbedingung 
+				$$\int_{-1}^1\!P_i(x) P_j(x)\,dx = 0\,\forall i \ne j$$
+		\item[c)] $\{P_0, ..., P_n\}$ bilden eine Basis des $\mathcal{P}_n$
+		\item[d)] 3-Term-Rekursion:
+		$$P_{n+1}(x) = \frac{2n+1}{n+1} x P_n(x) - \frac{n}{n+1} P_{n+1} P_{n-1}(x)$$
+	\end{itemize}
+\end{theorem}
+
+\begin{definition}[Definition I.7] Gauß-Quadratur. Die Knoten $x_i$, $i=0,...,n$ der Gaußquadratur auf $[-1, 1]$ sind die paarweise verschiedenen Nullstellen des Legendre-Polynoms $P_{n+1}$. Die Gewichte sind definiert als 
+	$$w_i = \int^1_{-1}\!L_i(x) \,dx$$	
+	$$L_i(x) = \prod_{j=0, j \ne i}^n \frac{x-x_i}{x_i-x_j}$$
+\end{definition}
+
+
+\begin{theorem}[Satz I.7] Exaktheitsgrad der Gaußquadratur. Die Gaußquadraturformel mit n+1 Knoten ist exakt mit $m = 2n+1$
+\end{theorem}
+
+\begin{remark}$w_i > 0$\end{remark}
+\begin{remark}Bei analytischen Funktionen erhält man mit Gaußquadraturformeln einen exponentiellen Fehlerabfall bezüglich n.\end{remark}
