@@ -81,3 +81,22 @@ $$P_n(x) = \frac{(-1)^n}{2^n n!} \frac{d^n}{dx^n} (1-x^2)^n$$
 
 \begin{remark}$w_i > 0$\end{remark}
 \begin{remark}Bei analytischen Funktionen erhält man mit Gaußquadraturformeln einen exponentiellen Fehlerabfall bezüglich n.\end{remark}
+
+\subsection{Adaptive Quadraturformeln}
+
+Beobachtung: Die Verwendung von summierten Quadraturformeln mit äquidistanten Knoten (der Teilintervalle) ist numerisch ineffizient für Funktionen, die ihr Verhalten stark ändern.
+
+\emph{Idee:} verwende lokal unterschiedliche Teilintervallslängen. Umsetzung erfolgt über lokale Abschätzung des Fehlers. Technische Realisierung: Berechne in Abhängigkeit der gewählten Quadraturformel durch Extrapolation einen verbesserten Wert.
+
+\begin{remark}
+	In der Vorlesung beschränken wir uns auf die Herleitung der adaptiven Trapezregel. In der Praxis verwendet man den adaptiven Simpson ($\rightarrow$ Matlab)
+\end{remark}
+
+Bezeichne 
+
+$$h = b - a$$
+$$T(h) = Q_a^b(f)$$
+$$T(\frac{h}{2}) = Q_a^{a+\frac{h}{2}}(f) + Q_{a+\frac{h}{2}}^b(f)$$
+$$Q(h) extrapolierter Wert$$
+
+Grundstruktur eines adaptiven Quadraturalgorithmus. TODO
