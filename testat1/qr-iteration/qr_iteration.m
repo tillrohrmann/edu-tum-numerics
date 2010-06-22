@@ -33,7 +33,6 @@ else
 	
 	for k = 1:maxiter
 		lapprox = lambda(T);
-		%TODO: I do not know whehter the fact, that the Matrix is in Hessenberg form will be exploited
 		[Q,R] = qr(T-lapprox*eye(rows));
 		T = R*Q+lapprox*eye(rows);
 		

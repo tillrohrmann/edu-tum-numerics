@@ -10,10 +10,6 @@ function [ eigv,w ] = gauss_legendre( n )
     end
     
     eigv = sort(qr_iteration(C,2,100,1.0e-10,[]));
-       
-    % TODO: check whether it is faster to calculate the legendre polynomial
-    % in a general form and evaluate it for every xi instead of calculating
-    % it every time recursively
     
     w = zeros(n,1);
     
