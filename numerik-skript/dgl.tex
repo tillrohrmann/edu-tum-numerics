@@ -45,3 +45,87 @@ $$y_2(t) = \dot{y}(t) = \dot{y}_1(t)$$
 $$y_3(t) = \ddot{y}(t) = \dot{y}_2(t)$$
 $$\vdots$$
 $$y_m(t) = y^{(m-1)}(t) = \dot{y}_{m-1}(t)$$
+
+Im Folgenden gehen wir von korrekt gestellten Problemen aus (Hadamard):
+
+\begin{itemize}
+	\item Existenz einer Lösung (Satz von Peano)
+	\item Eindeutigkeit der Lösung (Satz von Picard-Lindelöf)
+	\item Stetige Abhängigkeit der Lösung von den Daten (Lemma von Gronwall)
+\end{itemize}
+
+Von nun an betrachten wir Anfangswertprobleme 1. Ordnung der Form:
+
+\begin{quote}
+	Gesucht: 
+	$$y: [t_0, T] \rightarrow \mathbb{R}^n$$ mit 
+	$y = f(t, y)$, $y(t_0) = y_0$ und f Lipschitzstetig in y
+	$$\|f(t,y_1) - f(t,y_2)\| \le L \|y_1 - y_2\|$$
+\end{quote}
+
+Die Grundidee aller numerischer Verfahren ist die Zerlegung in eine endliche Anzahl von Teilintervallen $[t_1, t_{i+1}]$, $i = 0, ... N-1$ mit $t_0 < t_1 < ... < t_N = T$. Mit $h_i = t_{i+1} - t_i$ bezeichnet man die Zeitschrittweite. Nun wird für jedes $i$ eine Approximation $y_i$ von $y(t_i)$ gesucht. Eine Vielzahl von Verfahrensklassen basiert auf Integration, Numerischer Quadratur, Extrapolation.
+
+\begin{align}
+	\nonumber y(t_{i+1}) - y(t_i) &= \int_{t_i}^{t_{i+1}}\!\dot{y}(t)\,dt \\
+	\nonumber &= \int_{t_i}^{t_{i+1}}\!f(t, y(t))\,dt \\
+	\nonumber &=: I_i
+\end{align}
+
+Man kann $I_i$ ersetzen durch
+
+\begin{enumerate}
+	\item[1)] $I_i \approx h_i f(t_i, y(t_i))$ 
+	\item[2)] $I_i \approx h_i f(t_{i+1}, y(t_{i+1}))$ 
+	\item[3)] $I_i \approx \frac{h_i}{2} (f(t_i, y(t_i)) + f(t_{i+1}, y(t_{i+1})))$ (Trapezregel)
+	\item[4)] $I_i \approx h_i f(t_{i+\frac{1}{2}}, y(t_{i+\frac{1}{2}}))$
+	\item[5)] $I_i \approx \frac{h_i}{2} (f(t_i, y(t_i)) + f(t_i, y(t_i)) + h_i \frac {f(t_i,y(t_i))-f(t_{i-1}, y(t_{i-1}))}{h_{i-1}})$
+\end{enumerate}
+
+Im nächsten Schritt werden die unbekannten Funktionswerte $y(t_l),  = i, i+1, i-1$ durch ihre jeweiligen numerischen Approxomationen $y_l$ ersetzt. Dies definiert $y_{i+1}$
+
+\begin{enumerate}
+	\item[1)] $y_{i+1} = y_i + h_i f(t_i, y_i)$ (expliziter Euler, forward Euler)
+	\item[2)] $y_{i+1} = y_i + h_i f(t_{i+1}, y_{i+1})$ (impliziter Euler, backward Euler)
+	\item[3)] $y_{i+1} = y_i + \frac{h_i}{2} (f(t_i, y_i) + f(t_{i+1}, y_{i+1}))$ (Crank-Nicolson)
+	\item[4)] $y_{i+1} = y_i + h_i f(t_{i+\frac{1}{2}}, y_{i+\frac{1}{2}})$ (Mittelpunktsregel) \\
+		Spezialfall $h_i = h$: $y_{i+\frac{1}{2}} = y_{i-\frac{1}{2}} + h f(t_i, y_i)$
+	\item[5)] Sei $h_i = h$. $y_{i+1} = y_i + h (\frac{3}{2} f(t_i, y_i) - \frac{1}{2} f(t_{i-1}, y_{i-1}))$ (Adams-Bashforth Typ)
+\end{enumerate}
+
+Ersetzt man im Verfahren 3 bzw. 4 auf der rechten Seite $y_{i+1}$ bzw $y_{i+\frac{1}{2}}$ durch die Approximation aus einem expliziten Euler Schritt mit $h_i$ bzw. $\frac{h_i}{2}$, so erhält man
+
+\begin{enumerate}
+	\item[$3_{mod}$)] $y_{i+1} = y_i + \frac{h_i}{2} (f(t_i, y_i) + f(t_{i+1}, y_i + h_i f(t_i, y_i)))$ (Heun)
+	\item[$4_{mod}$)] $y_{i+1} = y_i + h_i f(t_{i+\frac{1}{2}}, y_i + \frac{h_i}{2} f(t_i, y_i))$ (modifiziertes Eulerverfahren)
+\end{enumerate}
+
+Frage: 
+\begin{itemize}
+	\item Wie können die Methoden klassifiziert werden?
+	\item Liegen Abschätzungen der Form $\|y(t_i) - y_i\| = O(h^p), h = \!\displaystyle\max_{i=0..N-1}{h_i}$ vor?
+\end{itemize} 
+
+\begin{definition}[Definition IV.2]
+	Klassifizierung
+	\begin{enumerate}
+		\item Ein Verfahren heißt explizit, falls $y_{i+1}$ durch Funktionsauswertungen von $f$ direkt bestimmt werden kann (Verfahren 1, 4, 5, $3_{mod}$, $4_{mod}$. Andernfalls heißt es implizit.
+		\item Ein Verfahren heißt Einschrittverfahren falls $y_{i+1}$ nur von $y_i$ abhängt (Verfahren 1, 2, 3, $3_{mod}$, $4_{mod}$). Hängt $y_{i+1}$ von den Werten $y_i, ..., y_{i-k+1}$ ab, so heißt es (k-Schritt) Mehrschrittverfahren.  
+	\end{enumerate}
+\end{definition}
+
+\subsection{Konvergenz von Einschrittverfahren}
+
+Ein allgemeines Einschrittverfahren kann in der Form 
+$$y_{i+1} = y_i + h_i \phi (t_i, h_i, y_i, y_{i+1}; f)$$
+
+dargestellt werden. $\phi$ nennt man dann Verfahrensfunktion oder Inkrementfunktion. 
+
+\begin{example} Für die Verfahrensfunktion des expliziten Euler gilt:
+
+	$$\phi_1(t_i, h_i, y_i, y_{i+1}) = f(t_i, y_i)$$
+	
+	Für die Verfahrensfunktion des impliziten Euler gilt:
+	
+	$$\phi_2(t_i, h_i, y_i, y_{i+1}) = f(t_{i+1}, y_{i+1})$$
+
+\end{example}
