@@ -23,10 +23,9 @@ function [ eigv,w ] = gauss_legendre( n )
         %calculating P_{n+1}(x_{i})
         p_prev = 0;
         p_current = 1;
-     
         
         for j = 1:n 
-            p_next =((2*j-1)*xi*p_current-(j-1)*p_prev)/j;
+            p_next =((2*j-1)*xi*p_current-(j-1)*p_prev)/j; 
             p_prev = p_current;
             p_current = p_next;
         end
