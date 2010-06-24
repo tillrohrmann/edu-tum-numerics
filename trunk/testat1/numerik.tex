@@ -1,0 +1,26 @@
+\documentclass[german]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{german}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\setlength{\parindent}{0cm}
+\setlength{\parindent}{0cm}
+\author{Till Rohrmann, Johannes Reifferscheid}
+\title{
+	Matlab-Tutorial 1
+}
+
+\begin{document}
+  \maketitle
+ 
+  \section{Aufgabe 2c}
+
+Da es zu jeder Nullstelle $\lambda$ eines Legendre-Polynoms auch eine Nullstelle $-\lambda$ gibt, und die Nullstellen als Eigenwerte einer Matrix berechnet werden, kann aufgrund der Symmetrie der Eigenwerte der Rayleigh-Shift nicht verwendet werden (wie in der Übung gezeigt).
+
+\section{Aufgabe 3c}
+
+Die Wurzelfunktion ist an der Stelle 0 nicht stetig differenzierbar, ist also keine analytische Funktion im Intervall $[0;1]$, so dass sich auch bei der Gauß-Quadratur kein exponentieller Fehlerabfall bezüglich m einstellt. Im Gegensatz dazu ist die Funktion $\frac{1}{x^2+1}$ beliebig oft differenzierter und somit analytisch, so dass nach der Fehlerabschätzung $err < C (b-a)^{m+2} \|f^{(m+1)}\|_{max}$ der Fehler exponentiell mit steigendem m abfällt.
+  
+\end{document}
