@@ -129,3 +129,138 @@ dargestellt werden. $\phi$ nennt man dann Verfahrensfunktion oder Inkrementfunkt
 	$$\phi_2(t_i, h_i, y_i, y_{i+1}) = f(t_{i+1}, y_{i+1})$$
 
 \end{example}
+
+%% 25. Juni 2010
+
+\begin{definition}[Definition IV.3] 
+	Ein Einschrittverfahren mit der Verfahrensfunktion $\phi$ heißt konvergent von der Ordnung p, falls gilt: der Fehler $e_i(t_j) := y(t_j) - y_j$ erfüllt 
+	
+	$$\|e_h\|_\infty = \OO{h^p}, \|e_h\|_\infty = \displaystyle\max_{j=0, \dots N_h}\|e_i(t_j)\|$$
+	
+	unter der Voraussetzung, dass 
+	
+	$$t_{N_h} = T, n = \max_i h_i, f \in C^p$$
+\end{definition}
+
+\begin{remark}
+	Anschaulich einleuchtend ist, dass der Fehler $e_h$ sich aus zwei Komponenten zusammensetzt
+	
+	\begin{enumerate}
+		\item[a)] lokaler Abbruchfehler (Konsistenzfehler)
+		\item[b)] Fehlerfortpflanzungsoperator
+	\end{enumerate}
+\end{remark}
+
+\subsubsection{Lokaler Abbruchfehler}
+
+\begin{definition}[Definition IV.4] Konsistenzfehler
+	\begin{enumerate}
+		\item
+			Sei $z(t, t_\alpha, y_\alpha)$ die Lösung des Anfangswertproblems 
+		
+			$$\dot{y} = f(T,y)$$
+			$$y(t_\alpha) = y_\alpha$$
+		
+			und $z_h$ sei die numerische Lösung aus einem Schritt des Einschrittverfahrens, das heißt, 
+			
+			$$z_n(t, t_\alpha, y_\alpha) = y_\alpha + (t - t_\alpha) \; \phi(t_\alpha, t-t_\alpha, y_\alpha).$$
+			
+			Dann heißt die Differenz 
+			
+			$$\delta(t_\alpha, y_\alpha, h) := z(t_\alpha + h, t_\alpha, y_\alpha) - z_h(t_\alpha + h, t_\alpha, y_\alpha)$$
+			
+			lokaler Abbruchfehler zum Startwert $(t_\alpha, y_\alpha)$.
+		\item
+			Der relative lokale Fehler
+			$$\tau(t_\alpha, y_\alpha, h) = \frac{1}{h}\delta(t_\alpha, y_\alpha, h)$$
+			heißt Konsistenzfehler.
+			
+		\item
+			Ein Verfahren heißt konsistenz, falls 
+			
+			$$\tau(t_\alpha, y_\alpha, h) \to 0, h \to 0$$
+			
+			gleichmäßig in $(t_\alpha, y_\alpha)$.
+			
+		\item
+			Ein Einschrittverfahren heißt konsistent von der Ordnung p, falls 
+			
+			$$\|\tau(t_\alpha, y_\alpha, h)\| \le C h^p, h \le H$$ 
+			
+			für alle Punkte $(t_\alpha, y_\alpha)$ in der Umgebung einer hinreichend glatten Lösungskurve ($y \in C^{p+1}$).
+	\end{enumerate}
+\end{definition}
+
+Das zentrale Hilsmittel zur Bestimmung der Konsistenzordnung ist die Taylerentwicklung.
+
+\begin{lemma}
+	Ein Einschrittverfahren ist genau dann konsistent, falls für $h \to 0$ gilt:
+	
+	$$\phi(t,h,y) \to f(t,y)$$
+\end{lemma}	
+
+\begin{proof}
+	\begin{align*}
+		z(t+h, t, y) &= z(t,t,y) + \dot{z}(t,t,y)(t+h-t) + \OO{h^2} \\
+		&= y + f(t,y) h + \OO{h^2} \\
+		\tau(t,y,h) &= \frac{1}{h} (z(t+h, t, y) - y - h \phi (t,h,y)) \\
+		 &= \underbrace{f(t,y) - \phi(t,h,y)}_{\to 0} + O(h) 
+	\end{align*}
+\end{proof}
+
+\begin{example}
+	\*
+	\begin{enumerate}
+		\item
+			Der expliziter Euler ist von Konvergenzordnung 1:
+			
+			\begin{align*}
+				\tau\left(t,y,h\right) &= \frac{1}{h} \left(y + f\left(t,y\right) h + \frac{1}{2} \left(f_t\left(t,y\right) + f_y\left(t,y\right) f\left(t,y\right)\right) h^2 + \OO{h^3} - y - hf\left(t,y\right)\right) \\
+				& = \frac{1}{2} \left(f_t\left(t,y\right) + f_y\left(t,y\right) f\left(t,y\right)\right) h + \OO{h^2} 
+			\end{align*}
+			
+		\item
+			Das Verfahren von Heun ist von Konvergenzordnung 2:
+			
+			\begin{align*}
+				z(t+h,t,y) &= y+f h + \frac{1}{2} h^2 (f_t + f_yf) + \frac{1}{6} h^3(f_{tt} + f_{ty}f + f_{ty} f + f_{yy}f^2 + f_yf_t + f_y^2 f) + \OO{h^4} \\
+				\phi(t,h,y) &= \frac{1}{2} ( f(t,y) + f(T+h, y+hf(t,y))) \\
+				&= \frac{1}{2} (f + f + hf_t + h f f_y + \frac{1}{2} h^2 f_{tt} + \frac{1}{2} 2 h h f f_{ty} + \frac{1}{2} h^2 f^2 f_{yy} + \OO{h^3})
+			\end{align*}
+			
+			Daraus folgt:
+			
+			\begin{align*}
+				\tau(t,y,h) = \frac{1}{h} &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf + \frac{1}{6} h^3 f_{tt} + \frac{1}{3} f_{ty}f + \frac{1}{6} h^3 f_{yy} f^2 + \frac{1}{6} f_yf_t + \frac{1}{6} h^3 f_y^2 f \\
+				- &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf + \frac{1}{4} h^3 ff_{ty} + \frac{1}{4} h^3 f^2f_{yy})) + \OO{h^3}
+			\end{align*}
+	\end{enumerate}
+\end{example}
+
+Die beiden Beispiele haben bereits die Problematik aufgezeigt, die eintritt, falls man Einschrittverfahren höherer Ordnung konstruieren will. 
+
+Allgemein gilt: ein Einschrittverfahren der Konsistenzordnung $\ge p$ erfordert 
+
+$$\frac{\operatorname{d}^{l+1}}{\operatorname{d}t^{l+1}} y(t) = \frac{\operatorname{d}^{l}}{\operatorname{d}t^{l}} g(t,y(t)) = \left. (l+1) \frac{\partial^l}{\partial^l h} \phi (t,h,y) \right|_{h = 0} \forall l=0, \dots, p-1$$ 
+
+Da beim Ableiten Produkt- und Kettenregel berücksichtigt werden müssen, wächst die anzahl der Terme, die man erhält, exponentiell in $p$ an.
+
+\subsubsection{Globaler Diskretisierungsfehler}
+
+Bei Einschrittverfahren existiert ein elementarer Zusammenhang zwischen Konsistenz und Konvergenz.
+
+\begin{definition}[Definition IV.5] (Null-)Stabilität: Ein Einschrittverfahren heißt Null-stabil, falls ein $H_0 > 0$ existiert und ein $C < \infty$ existiert, so dass für alle $\epsilon > 0$ gilt:
+
+	$$\|y_i - z_i\| \le C \epsilon \;\;\;\forall i \le N_h,\;\;h \in \left(0,H_0\right],\;\;t_{N_h} = T$$
+
+	falls
+	
+	\begin{align*}
+		y_{i+1} &= y_i + h_i \phi (t_i, h_i, y_i) \\
+		z_{i+1} &= z_i + h_i (\phi (t_i, h_i, y_i) + \delta_{i+1}) \\
+		z_0 &= y_0 + \delta_0 \\
+	\end{align*}
+	
+	mit $\|\delta_i\| \le \epsilon$
+
+\end{definition}
