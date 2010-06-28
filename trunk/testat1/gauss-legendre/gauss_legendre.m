@@ -2,6 +2,7 @@ function [ x,w ] = gauss_legendre( n )
     % Calculates the knots (x) and weights (w) for gauss legendre quadrature 
     % with n knots.
     
+    % build the matrix (according to the work sheet) of which the eigenvalues shall be calculated
     C = sparse(n, n);
     for i = 1 : n-1 
         b = i / sqrt(4*i^2 - 1);
@@ -37,6 +38,7 @@ function [ x,w ] = gauss_legendre( n )
         w(n-i+1) = w(i);
     end
     
+    %sum of all weights has to be 2 => if the number of knots is odd the knot in the middle can be calculated by 2-sumOfAllWeights
     if(mod(n,2)== 1)
         w(floor(n/2)+1) = 2 - sumOfAllWeights;
     end
