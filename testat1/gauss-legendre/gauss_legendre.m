@@ -1,7 +1,7 @@
-function [ eigv,w ] = gauss_legendre( n )
-%GAUSS_LEGENDRE Summary of this function goes here
-%   Detailed explanation goes here
-
+function [ x,w ] = gauss_legendre( n )
+    % Calculates the knots (x) and weights (w) for gauss legendre quadrature 
+    % with n knots.
+    
     C = sparse(n, n);
     for i = 1 : n-1 
         b = i / sqrt(4*i^2 - 1);
@@ -41,4 +41,5 @@ function [ eigv,w ] = gauss_legendre( n )
         w(floor(n/2)+1) = 2 - sumOfAllWeights;
     end
     
+    x = eigv;   
 end

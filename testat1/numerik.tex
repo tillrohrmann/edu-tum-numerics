@@ -13,14 +13,32 @@
 }
 
 \begin{document}
-  \maketitle
+	\maketitle
  
-  \section{Aufgabe 2c}
+    \section{Aufgabe 1b}
+    
+      \includegraphics[width=90mm]{qr-iteration/qrFig1.pdf}
+      
+      \includegraphics[width=90mm]{qr-iteration/qrFig2.pdf}
+ 
+    \section{Aufgabe 2b}
 
-Da es zu jeder Nullstelle $\lambda$ eines Legendre-Polynoms auch eine Nullstelle $-\lambda$ gibt, und die Nullstellen als Eigenwerte einer Matrix berechnet werden, kann aufgrund der Symmetrie der Eigenwerte der Rayleigh-Shift nicht verwendet werden (wie in der Übung gezeigt).
+      \includegraphics[width=80mm]{gauss-legendre/glFig1.pdf}
+      
+      \includegraphics[width=80mm]{gauss-legendre/glFig2.pdf}
 
-\section{Aufgabe 3c}
+	\section{Aufgabe 2c}
 
-Die Wurzelfunktion ist an der Stelle 0 nicht stetig differenzierbar, ist also keine analytische Funktion im Intervall $[0;1]$, so dass sich auch bei der Gauß-Quadratur kein exponentieller Fehlerabfall bezüglich m einstellt. Im Gegensatz dazu ist die Funktion $\frac{1}{x^2+1}$ beliebig oft stetig differenzierbar und somit analytisch, so dass nach der Fehlerabschätzung $err < C (b-a)^{m+2} \|f^{(m+1)}\|_{\infty,[a,b]}$ der Fehler exponentiell mit steigendem m abfällt.
+	Da es zu jeder Nullstelle $\lambda$ eines Legendre-Polynoms auch eine Nullstelle $-\lambda$ gibt, und die Nullstellen als Eigenwerte einer Matrix berechnet werden, kann aufgrund der Symmetrie der Eigenwerte der Rayleigh-Shift nicht verwendet werden (wie in der Übung gezeigt).
+
+	\section{Aufgabe 3b}
+
+      \includegraphics[width=120mm]{gauss-legendre2/gl2Fig1.pdf}
+      
+      \includegraphics[width=120mm]{gauss-legendre2/gl2Fig2.pdf}
+
+	\section{Aufgabe 3c}
+
+	Die Wurzelfunktion ist an der Stelle 0 nicht stetig differenzierbar, ist also keine analytische Funktion im Intervall $[0;1]$, so dass sich auch bei der Gauß-Quadratur kein exponentieller Fehlerabfall bezüglich m einstellt. Im Gegensatz dazu ist die Funktion $\frac{1}{x^2+1}$ beliebig oft stetig differenzierbar und somit analytisch, so dass nach der Fehlerabschätzung $err < C (b-a)^{m+2} \|f^{(m+1)}\|_{\infty,[a,b]}$ der Fehler exponentiell mit steigendem m abfällt.
   
 \end{document}

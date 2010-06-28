@@ -1,14 +1,16 @@
 function [ S ] = gauss_legendre_quadrature( f , a, b,n)
-%GAUSS_LEGENDRE_QUADRATURE Summary of this function goes here
-%   Detailed explanation goes here
+    % calculates an approximation of the integral of the function f 
+    % between a and b using gauss-legendre quadrature with n knots.
 
-    if(n > 20)
-        exception = MException('testat1:gauss_legendre_quadrature:InvalidArgumentException','Gauss-Legendre-Quadrature with more than 20 points, is not supported');
-        throw(exception)
-    end
 
     %get knots and weights
-    [x w] = gl(n);
+    if(n > 20)
+        warning('More than 20 points specified. Using gauss_legendre instead of gl');
+        [x w] = gauss_legendre(n);
+    else
+        [x w] = gl(n);
+    end
+
 
     S = 0;
 
