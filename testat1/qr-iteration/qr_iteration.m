@@ -13,6 +13,7 @@ assert(size(T,1)>0)
 assert(size(T,1)==size(T,2))
 assert(TOL >=0)
 
+%check whether additional information for the error plot shall be stored
 if(nargin > 5)
 	errorInformation = true;
 else
@@ -21,6 +22,7 @@ end
 
 rows = size(T,1);
 
+% matrix of dimension 1x1 => trivial case
 if(rows == 1)
 	eigv = [T(1,1); eigv];
 else
@@ -32,15 +34,20 @@ else
 	end
 	
 	for k = 1:maxiter
+		%calculate eigenvalue approximation
 		lapprox = lambda(T);
+		%calculate QR-decomposition of the matrix T-lapprox*ID (matrix whose eigenvalues are shifted by lapprox)
 		[Q,R] = qr(T-lapprox*eye(rows));
+		%calculate the matrix for the next iteration step
 		T = R*Q+lapprox*eye(rows);
 		
+		%store additional error information for error plot
 		if(errorInformation==true)	
 			subdiag(:,end+1) =[diag(T,-1);zeros(size(eigv,1),1)];
 			eigapprox(:,end+1) =[diag(T); eigv];
 		end
 		
+		%check the stop criterion
 		if(abs(T(rows,rows-1))<= TOL*(abs(T(rows-1,rows-1))+abs(T(rows,rows))))
 			eigv = [T(rows,rows); eigv];
 			if(errorInformation==true)
@@ -64,8 +71,8 @@ function lambda = rayleigh(A)
 end
 
 % wilkinson calculates the eigenvalue approximation according to the wilkinson shift. It calculates
-% the eigenvalues of the submatrix A(size(A)(1)-1:,size(A)(2)-1:) and chooses the eigenvalue which
-% is closer to A(size(A)(1),size(A)(2))
+% the eigenvalues of the submatrix A(size(A,1)-1:,size(A,2)-1:) and chooses the eigenvalue which
+% is closer to A(size(A,1),size(A,2))
 % A - matrix
 % return lambda - eigenvalue approximation
 function lambda = wilkinson(A)
