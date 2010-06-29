@@ -1,6 +1,6 @@
 \section{Integration gewöhnlicher Differentialgleichungen}
 
-Die Behandlung von Differentialgleichungen spielt in der Numerik eine zentrale Rolle. Die mathematische Modellierung von zeitabhängigen Vorgängen führt vielfach auf Systeme von Differentialgleichungen (Biologie, Mechanik, Wirtschaft). Hängen die Zustandsgrößen nur von der Zeit ab, so spricht man von \emph{gewöhnlichen Differentialgleichungen}, hängen sie auch vom Ort ab, so spricht man von \emph{partiellen Differentialgleichungen}. Da die analytische Lösung meist nicht explizit berechenbar ist, ist man auf numerische Approximationen angewiesen.
+Die Behandlung \verb|•|on Differentialgleichungen spielt in der Numerik eine zentrale Rolle. Die mathematische Modellierung von zeitabhängigen Vorgängen führt vielfach auf Systeme von Differentialgleichungen (Biologie, Mechanik, Wirtschaft). Hängen die Zustandsgrößen nur von der Zeit ab, so spricht man von \emph{gewöhnlichen Differentialgleichungen}, hängen sie auch vom Ort ab, so spricht man von \emph{partiellen Differentialgleichungen}. Da die analytische Lösung meist nicht explizit berechenbar ist, ist man auf numerische Approximationen angewiesen.
 
 \subsection{Aufgabenstellung und einfache Einschrittverfahren}
 
@@ -176,7 +176,7 @@ dargestellt werden. $\phi$ nennt man dann Verfahrensfunktion oder Inkrementfunkt
 			heißt Konsistenzfehler.
 			
 		\item
-			Ein Verfahren heißt konsistenz, falls 
+			Ein Verfahren heißt konsistent, falls 
 			
 			$$\tau(t_\alpha, y_\alpha, h) \to 0, h \to 0$$
 			
@@ -264,3 +264,147 @@ Bei Einschrittverfahren existiert ein elementarer Zusammenhang zwischen Konsiste
 	mit $\|\delta_i\| \le \epsilon$
 
 \end{definition}
+
+% 29. Juni 2010
+
+Im Gegensatz zu anderen Stabilitätsbegriffen wird bei der Null-Stabilität der Grenzwert $h \to 0$ betrachtet.
+
+\begin{theorem}
+	Sei $\phi$ eine Verfahrensfunktion eines expliziten Einschrittverfahrens mit $\phi$ Lipschitzstetig in $y$, so ist das Einschrittverfahren Null-stetig.
+\end{theorem}
+
+\begin{proof} wir betrachten den Spezialfall $h_i = h$. Definiere
+
+	$$w_{i+1} = z_{i+1} - y_{i+1}$$
+
+	so gilt:
+	\begin{align*}
+		w_{i+1} &= w_i + h(\underbrace{\phi(t_i, h, z_i) - \phi(t_i, h, y_i)}_{\le L \|z_i - y_i\| = L \|w_i\|} + \delta_{i+1})\\
+		\|w_{i+1}\| &\le (1 + hL) \|w_i\| + h\|\delta{i+1}\| \\
+		& \le (1+hL)\|w_i\| + h\epsilon
+	\end{align*}
+	
+	Damit ist das Lemma von Gronwall anwendbar mit 
+	
+	\begin{align*}
+		a = hL, b = h\epsilon &\rightarrow \|w_i\| \le \|w_0\| e^{N_h hL} + \frac{\epsilon}{L}\left(e^{N_h hL} - 1\right) \;\;\; i = 0, \dots, N_h, N_h = \frac{T - t_0}{h}\\
+		&\rightarrow \|w_i\| \le \left(1 + \frac{1}{L}\right) \epsilon e^{(T-t_0)L}
+	\end{align*}
+\end{proof}
+
+Kombiniert man Stabilität und Konsistenz, erhält man eine obere Schranke für den Fehler.
+
+\begin{theorem}
+	Konvergenzordnung. Ein von der Ordnung $p$ konsistentes Einschrittverfahren mit Lipschitzstetiger Verfahrensfunktion ist konvergent mit
+	
+	$$\|e_h\| \le Ch^p$$
+	
+	falls
+	
+	$$f \in C^{p+1}$$
+\end{theorem}
+
+\begin{proof}
+	Definiere $z_i = y(t_i)$, so erhält man 
+	
+	\begin{align*}
+		z_{i+1} &= y(t_{i+1}) \\
+		&= y(t_i) + h_i \phi(t_i, h_i, y(t_i)) + h_i \tau(t_i, y(t_i), h_i)\\
+		&= z_i + h_i(\phi(t_i, h_i, z_i) + \underbrace{\tau(t_i, z_i, h_i)}_{\delta_{i+1} mit \|\delta_{i+1}\| \le Ch^p})
+	\end{align*}
+	
+	Da das Verfahren nach Satz IV.2 Null-stabil ist, gilt:
+	
+	$$\|e_h\|_\infty = \|y(t_i) - y_i\|_\infty \le C\epsilon \le Ch^p$$
+\end{proof}
+
+Faustregel: Konsistenz + Stabilität = Konvergenz.
+
+\begin{remark}
+	Die theoretischen Ergebnisse berücksichtigen keine Rundungsfehler. Das heißt
+	
+	$$y_{i+1} = y_{i} + h_i \left(\phi\left(h, h_i, y_i\right) + \underbrace{eps}_{Maschinengenauigkeit} / h_i \right)$$
+	
+	unter Berücksichtigung von Rundungsfehlern:
+	
+	$$\|e_h\|_\infty \le C\left(h^p + \frac{eps}{h}\right)$$
+	
+	\begin{enumerate}
+		\item Man erhält keine numerischen Approximationen in Maschinengenauigkeit ($\OO{eps^{\frac{p}{p+1}}}$)
+		\item Der Effekt, dass der Fehler wieder anwächst, tritt umso früher ein, desto größer p.
+		
+		$$h^p = \frac{eps}{h}\;\;\;\;\;\;h = \sqrt[p+1]{eps}$$
+	\end{enumerate}
+\end{remark}
+
+Frage: Wie erhält man Verfahren von höherer Ordnung?
+
+Idee: Setze $\phi$ gleich den ersten $p$ Gliedern der Taylorentwicklung von $y(t + h) - y(t)$.
+
+\begin{tabular}{ l l }
+	$p=1 \;\;\;\;\;\;\;\;$ & $\phi(t,h,y) = f(t,y)$\\
+	$p=2 \;\;\;\;\;\;\;\;$ & $\phi(t,h,y) = f(t,y) + \frac{1}{2} (f_t(t,y) + f_y(t,y) f(t,y))$
+\end{tabular}
+
+Die Idee ist numerisch schlecht:
+
+\begin{enumerate}
+	\item Ableitungen der rechten Seite werden explizit benötigt.
+	\item Der Aufwand steigt exponentiell in p.
+\end{enumerate}
+
+Die Klasse der Runge-Kutta Verfahren stellt eine attraktive Alternative dar.
+
+\subsection{Runge-Kutta Verfahren}
+
+Die Verfahren von Runge und Kutta sind Verallgemeinerungen der bisher betrachteten Einschrittverfahren. Die Zentrale Idee ist: berechne $y_{i+1}$ aus $y_i$ und einer gewichteten Summe von Approximationen an die Steigung von $y(t)$ an Teilknoten $t_{ij} \in [t_i, t_i + h_i]$.
+
+\begin{definition}[Definition IV.6] Runge-Kutta Verfahren.
+	\begin{enumerate}
+		\item Ein allgemeines Runge-Kutta Verfahren hat die Form
+		
+		$$y_{i+1} = y_i + h_i \sum_{j=1}^s \gamma_j k_j, s \in \mathbb{N}$$
+		
+		s heißt Stufe des Runge-Kutta Verfahrens und die $k_j$ sind definiert
+		
+		$$k_j := f(t_{ij}, y_i + h_i \sum_{l=1}^s \beta_{jl} k_l)$$
+		
+		mit
+		
+		$$t_{ij} = t_i + \alpha_j h_i$$
+		
+		und
+		
+		$$\alpha_j, \beta_{jl}, \gamma_j \in \mathbb{R} \;\;\;\; 1 \le j, l \le s$$ 
+		
+		\item Die kompakte Matrixdarstellung 
+		
+		$$\begin{array}{cccc}
+			\alpha_1 & \beta_{11} & \dots & \beta_{1s} \\
+			\vdots   & \vdots     &       & \vdots \\
+			\alpha_s & \beta_{s1} & \dots & \beta_{ss} \\
+			         & \gamma_{1} & \dots & \gamma_{s} 
+		\end{array}$$
+		
+		heißt Butcher-Schema.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	Butcher-Schema für bisher eingeführte Verfahren:
+	
+	\begin{enumerate}
+		\item Expliziter Euler
+				$$\begin{array}{cc}
+			0 & 0\\
+			  & 1
+		\end{array}$$
+
+		\item Impliziter Euler
+				$$\begin{array}{cc}
+			1 & 1\\
+			  & 1
+		\end{array}$$
+		
+	\end{enumerate}
+\end{example}

@@ -12,15 +12,35 @@
 \renewcommand \thesection{\Roman{section}}
 \providecommand{\OO}[1]{\operatorname{O}\left(#1\right)}
 
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{theorem_int}{Satz}[section]
+\newtheorem{lemma}[theorem_int]{Lemma}
+\newtheorem{proposition}[theorem_int]{Proposition}
+\newtheorem{corollary}[theorem_int]{Korollar}
 
-\newenvironment{proof}[1][Beweis]{\begin{trivlist}\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-\newenvironment{definition}[1][Definition]{\begin{trivlist}\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{proof}[1][Beweis] {
+	\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}]}
+	{\end{trivlist}}
+	
 \newenvironment{example}[1][Beispiel]{\begin{trivlist}\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 \newenvironment{remark}[1][Bemerkung]{\begin{trivlist}\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newsavebox{\defbox} 
+\newsavebox{\theobox} 
+
+\newenvironment{definition}[1][Definition] { 
+ \begin{lrbox}{\defbox} 
+  \begin{minipage}{1\linewidth}\begin{trivlist}\item[\hskip \labelsep {\bfseries #1}]} 
+ {\end{trivlist}\end{minipage}\end{lrbox} 
+  \par\vspace{18pt}\noindent 
+  \fbox{\usebox{\defbox}}\par} 
+
+\newenvironment{theorem}[1] { 
+ \begin{lrbox}{\theobox} 
+  \begin{minipage}{1\linewidth}\begin{theorem_int} #1} 
+ {\end{theorem_int}\end{minipage}\end{lrbox} 
+  \par\vspace{18pt}\noindent 
+  \fbox{\usebox{\theobox}}\par} 
 
 \newcommand{\qed}{\nobreak \ifvmode \relax \else
       \ifdim\lastskip<1.5em \hskip-\lastskip
