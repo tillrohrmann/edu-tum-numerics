@@ -9,8 +9,8 @@ col = {'b*-','go-','r+-','cd--'};
 
 Nmax = 5;
 N = 4;
-%% hier wieder durch 1:4 ersetzen!
-for ii=1:1
+
+for ii=1:4
     m = zeros(Nmax,1);
     N = 4;
     for j=1:Nmax

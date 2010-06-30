@@ -11,8 +11,14 @@ function [ x, m ] = solvePCG( A, b, x0, tol, maxit, ptype )
             B = diag(1 ./ diag(A));
         case 2
             % SGS
+            x = zeros(size(A,1));
+            m = 0;
+            return
         case 3
             % SSOR
+            x = zeros(size(A,1));
+            m = 0;
+            return
         otherwise
             B = eye(size(A,1));
     end

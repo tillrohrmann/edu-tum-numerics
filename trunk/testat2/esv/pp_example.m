@@ -23,7 +23,7 @@ y0 = [20;20];
 
 %% Solve ODE and plot results.
 % methods
-method = {@EULER_STEP; @MOD_EULER_STEP; @HEUN_STEP};
+method = {@CN_STEP_FIXEDPOINT; @MOD_EULER_STEP; @HEUN_STEP};
 % plot colors
 col = {'-b'; '-g'; '-r'};
 
