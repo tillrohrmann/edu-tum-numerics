@@ -10,10 +10,10 @@ T = 5;
 S = 4;
 
 % right hand side
-f = @BEAMODE;
+f = @BEAMODE;  % WAS: f = 'BEAMNODE';
 
 % Jacobian of the right hand side
-df = @BEAMJAC;
+df = @BEAMJAC; % WAS: df = 'BEAMJAC';
 
 % initial conditions
 t0 = 0;
@@ -32,7 +32,7 @@ for ii = 1:length(Nvec)
   h = (T-t0)/N;
   
   % Crank-Nicholson with Newton iteration
-  % [t,y,iter] = OSM(t0,y0,h,N,@CN_STEP_NEWTON,f,df);
+  % [t,y,iter] = OSM(t0,y0,h,N,@CN_STEP_NEWTON,f,df); % WAS: [t,y,iter] = OSM(t0,y0,h,N,@CN_STEP_NEWTON,f);
   
   % graphical output 
 %  figure(ii)
