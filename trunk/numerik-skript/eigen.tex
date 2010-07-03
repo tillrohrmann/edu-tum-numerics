@@ -1,0 +1,112 @@
+\section{Eigenwerte und Eigenvektoren für symmetrische Matrizen}
+\subsection{Aufgabenstellung}
+Sei $A\in \mathbb{R}^{n\times n}$ mit $A^{T}=A$, so ist bekannt, dass eine ONB von EV $v_{i},i=1,\ldots,n$ existiert, d.h.
+$A\cdot v_{i}=\lambda_{i}\cdot v_{i}$ und $v_{i}^{T}\cdot v_{j}=0\quad i\not = j$ und $||v_{i}||_{2}=1$
+
+\subsection{Vektoriteration}
+\begin{algorithm}
+	\caption{Vektoriteration}
+	\begin{algorithmic}
+		\STATE gegeben: $A,x^{0}$
+		\FOR{$k=0$ to $\infty$}
+			\STATE $x^{k+1}=\frac{Ax^{k}}{||Ax^{k}||_{2}}$
+			\STATE $\lambda^{k}=(x^{k})^{T}Ax^{k}$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+
+Im folgenden gilt: $A=A^{T}$ und $A\in \mathbb{R}^{n\times n}$
+
+\begin{theorem}
+	[Satz II.1] Konvergenz der Vektoriteration
+	\\
+	F$$||sgn(\lambda_{1})^{k}\cdot x_{k} - v_{1}||_{2} \leq C_{1}(x^{0})\cdot | \frac{\lambda_{2}}{\lambda_{1}}|^{k}\quad 
+	\text{falls} x^{0}\cdot v_{1}>0$$ür die EW von $A$ gelte: $|\lambda_{1}| > |\lambda_{2}| \geq |\lambda_{3}| \geq \ldots \geq |\lambda_{n}|$
+	und der Startvektor $x^{0}$ der Vektoriteration erfülle $x^{0} \not \in span{v_{2},\ldots,v_{n}}$ so gilt folgende
+	Konvergenzordnung:
+	$$||-sgn(\lambda_{1})^{k}\cdot x_{k} - v_{1}||_{2} \leq C_{1}(x^{0})\cdot | \frac{\lambda_{2}}{\lambda_{1}}|^{k}\quad 
+	\text{falls} x^{0}\cdot v_{1}<0$$
+	$$|\lambda_{1}-\lambda^{k}| \leq C_{2}(x^{0})\cdot | \frac{\lambda_{2}}{\lambda_{1}}|^{2k}$$
+\end{theorem}
+
+\begin{remark}
+Die Vektoriteration kann auch auf unsymmetrische Matrizen angewendet werden. Aber die Konvergenzrate im EW reduziert sich i.d.R. auf $|\lambda^{k}-\lambda_{1}|\leq C\cdot |\frac{\lambda_{2}}{\lambda_{1}}|$
+\end{remark}
+\subsection{Inverse Vektoriteration}
+Grundidee: Wende Vektoriteration auf die Matrix $(A-\mu Id)^{-1}$ an.
+\begin{algorithm}
+	\caption{Inverse Vektoriteration}
+	\begin{algorithmic}
+		\STATE gegeben: $x^{0}$ mit $||x^{0}||_{2}=1$, $\mu$
+		\FOR{$k=0$ to $\infty$}
+			\STATE Löse $(A-\mu Id)\tilde x^{k+1} = x^{k}$
+			\STATE $\lambda^{k} = \frac{1}{x^{k^{T}}\cdot \tilde x^{k+1}} + \mu$
+			\STATE $x^{k+1} = \frac{\tilde x^{k+1}}{||\tilde x^{k+1}||_{2}}$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+	\begin{enumerate}
+		\item Überträgt man die Ergebnisse aus Satz II.1 auf die inverse Vektoriteration:
+			$$\max_{j\not = i_{0}} \frac{|\mu - \lambda_{i_{0}}|}{|\mu - \lambda_{j}|} < 1$$
+		\item Je näher $\mu$ an $\lambda_{i_{0}}$ liegt, desto
+		\begin{enumerate}
+			\item schneller die erwartete Fehlerabhnahme
+			\item schlechter die Kondition von $A-\mu Id$
+		\end{enumerate}
+			dennoch erhält man i.d.R. keine Stabilitätsprobleme. Daher wird häufig nach $m$ Schritten $\mu$ durch das aktuelle
+			$\lambda^{m}$ ersetzt und die inverse Vektoriteration neu gestartet.
+		\item Jeder iterative Algorithmus benötigt ein geeignetes Abbruchkriterium:
+		\begin{itemize}
+			\item $k\leq k_{max}$ (Anzahl der Iterationen)
+			\item geschätzter Fehler $\leq$ Toleranz:
+			$$\frac{\alpha_{k}}{1-\alpha_{k}}\cdot (\lambda^{k}-\lambda^{k-1})\text{ mit } \alpha_{k}=\frac{\lambda^{k}-\lambda^{k-1}}{\lambda^{k-1}-\lambda^{k-2}}$$
+		\end{itemize}
+		\item Spezialfall $m=1$ quadratische Konvergenz
+		$$|\lambda^{k+1}-\lambda_{i_{0}}|\leq C \cdot |\lambda^{k}-\lambda_{i_{0}}|$$
+	\end{enumerate}
+\end{remark}
+
+\subsection{QR-Iteration}
+\begin{algorithm}
+	\caption{QR-Iteration (ohne Shift)}
+	\begin{algorithmic}
+		\STATE gegeben: $A,Q_{0}$
+		\STATE $A_{0}=Q_{0}^{T}AQ_{0}$ (Ähnlichkeitstransformation $\Rightarrow$ EW bleiben erhalten)
+		\FOR{$k=0$ to $\infty$}
+			\STATE QR-Zerlegung: $A_{k}=Q_{k+1}\cdot R_{k+1}$
+			\STATE $A_{k+1}=R_{k+1}\cdot Q_{k+1}$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+	Die QR-Zerlegung zerlegt eine Matrix $A$ so in eine orthonormale Matrix $Q$ und eine obere Dreiecksmatrix $R$, dass gilt: $A=Q\cdot R$.
+	Für orthonormale Matrizen gilt: $Q^{-1}=Q^{T}$.
+\end{remark}
+
+\begin{theorem}
+[Satz II.2] Die im Algorithmus erzeugten Matrizen $A_{k}$ haben die gleichen EW wie $A$
+\end{theorem}
+
+\begin{theorem}
+[Satz II.3] Konvergenz der QR-Iteration
+\\
+Sei $A$ eine symmetrische Matrix mit den reellen EW $\lambda_{i}$ mit $|\lambda_{1}|>|\lambda_{2}|>\ldots > |\lambda_{n}| > 0$.
+Des Weiteren wird gefordert, dass für die ONM $V$ der EV, d.h. $A=V\Lambda V^{-1}$, mit $\Lambda=\left(
+	\begin{array}{ccc}
+		\lambda_{1} & 0 & 0\\
+		0 &\ddots & 0 \\
+		0 & 0 & \lambda_{n}
+	\end{array}
+	\right)$, gelte, dass von $\tilde V^{-1}$, mit $\tilde V:=Q_{0}^{T}\cdot V$, 
+	die LU-Zerlegung existiere, d.h. $\tilde V^{-1}=L\cdot U$ mit $l_{i,i}=1$.
+	Dann gilt:
+	\begin{enumerate}
+		\item $|Q_{k}|\rightarrow Id$ (von jedem Eintrag $q_{i,j}$ den Betrag nehmen)
+		\item $|R_{k}|\rightarrow |\Lambda|$
+		\item $(A_{k})_{i,i}\rightarrow \lambda_{i}$ und $(A_{k})_{i,j} \rightarrow 0$ mit $i \not = j$
+	\end{enumerate}
+\end{theorem}
