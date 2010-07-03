@@ -1,6 +1,58 @@
 \section{Numerische Quadratur}
 
-\subsection{}
+\subsection{Numerische Quadratur}
+\begin{definition}[Definition I.1]
+Eine Quadraturformel hat die allgemeine Form
+\begin{displaymath}
+	Q_{a}^{b}(f):=\sum_{i=0}^{n}w_{i}\cdot f(x_{i})
+\end{displaymath}
+Dabei bezeichnet man die $w_{i}$ als Gewichte und die $x_{i}$ als Stützstellen.
+\end{definition}
+\begin{remark} Man fordert:
+	\begin{enumerate}
+		\item $x_{i} \in [a,b]$
+		\item $x_{i}\not = x_{j}$
+		\item $\sum_{i=0}^{n}w_{i}=(b-a)$
+		\item $w_{i} > 0$
+	\end{enumerate}
+\end{remark}
+
+\begin{definition}
+	[Definition I.2] Exaktheitsgrad
+	\\
+	Man nennt eine Quadraturformel exakt vom Grad m, falls
+	\begin{displaymath}
+		Q_{a}^{b}(p) = \int_{a}^{b} P(x) dx\quad p\in \mathcal{P}_{m}([a,b])
+	\end{displaymath}
+\end{definition}
+
+\begin{theorem}
+[Satz I.1] Fehlerabschätzung
+	\begin{enumerate}
+		\item Sei $Q_{a}^{b}$ eine Quadraturformel vom Exaktheitsgrad $m$, so gilt $|Q_{a}^{b}(f)-\int_{a}^{b}f(x) dx|\leq 
+		C\cdot (b-a)^{m+2}\cdot ||f^{m+1}||_{\infty,[a,b]}$, für alle $f\in C^{m+1}([a,b])$
+		\item Sei $Q_{N}$ eine summierte Quadraturformel vom Exaktheitsgrad $m$, so gilt $|Q_{N}(f)-\int_{a}^{b}f(x)dx|\leq
+		C\cdot (b-a)\max_{k=1,\ldots,N}(a_{k}-a_{k-1})^{m+1}$
+	\end{enumerate}
+\end{theorem}
+
+\begin{definition}
+	[Definition I.3] Summierte Quadraturformel
+	\\
+	Sei $J={a=a_{0}<a_{1}<\ldots <a_{n}=b}$ eine Zerlegung des Intervalls $[a,b]$. 
+	Dann nennt man $Q_{N}(f)=\sum_{k=0}^{N-1}Q_{a_{k}}^{a_{k+1}}(f)$ eine summierte Quadraturformel.
+	
+\end{definition}
+\begin{definition}
+[Definition I.4] Substittutionsregel
+\\
+Sei $Q_{a}^{b}$ eine gegebene QF mit Knoten $x_{i}$ und Gewichten $w_{i}$. Dann definiert die Substitutionsregel
+$\hat w_{i}=w_{i}\cdot\frac{\hat b-\hat a)}{b-a}$ und $\hat x_{i}=\hat a+\frac{\hat b - \hat a}{b-a}\cdot(x_{i}-a)$
+die transformierte QF.
+\end{definition}
+\begin{theorem}
+[Satz I.2] Sei $Q_{a}^{b}$ exakt vom Grad $m$, so ist die transformierte QF ebenfalls exakt vom Grad $m$.
+\end{theorem}
 \subsection{Newton-Cotes Formeln}
 
 Die Newton-Cotes Formeln werden bezüglich $[0, 1]$ tabelliert und die Knoten sind äquidistant.
@@ -45,6 +97,10 @@ Die Newton-Cotes Formeln werden bezüglich $[0, 1]$ tabelliert und die Knoten si
 \begin{theorem}[Satz I.4]
 	Die Newton-Cotes-Formeln sind exakt vom Grad $m = n + (n+1)\%2$
 \end{theorem}
+
+\begin{remark}
+In der Praxis werden die NC-Formeln nur bis $n\leq 6$ verwednet. Ab $n=8$ kann es zu negativen Gewichten kommen.
+\end{remark}
 	
 	
 \subsection{Gaußquadratur}
@@ -66,7 +122,7 @@ $$P_n(x) = \frac{(-1)^n}{2^n n!} \frac{d^n}{dx^n} (1-x^2)^n$$
 				$$\int_{-1}^1\!P_i(x) P_j(x)\,dx = 0\,\forall i \ne j$$
 		\item[c)] $\{P_0, ..., P_n\}$ bilden eine Basis des $\mathcal{P}_n$
 		\item[d)] 3-Term-Rekursion:
-		$$P_{n+1}(x) = \frac{2n+1}{n+1} x P_n(x) - \frac{n}{n+1} P_{n+1} P_{n-1}(x)$$
+		$$P_{n+1}(x) = \frac{2n+1}{n+1} x P_n(x) - \frac{n}{n+1} P_{n-1}(x)$$
 	\end{itemize}
 \end{theorem}
 
@@ -89,7 +145,7 @@ Beobachtung: Die Verwendung von summierten Quadraturformeln mit äquidistanten K
 \emph{Idee:} verwende lokal unterschiedliche Teilintervallslängen. Umsetzung erfolgt über lokale Abschätzung des Fehlers. Technische Realisierung: Berechne in Abhängigkeit der gewählten Quadraturformel durch Extrapolation einen verbesserten Wert.
 
 \begin{remark}
-	In der Vorlesung beschränken wir uns auf die Herleitung der adaptiven Trapezregel. In der Praxis verwendet man den adaptiven Simpson ($\rightarrow$ Matlab)
+	In der Vorlesung beschränken wir uns auf die Herleitung der adaptiven Trapezregel. In der Praxis verwendet man den adaptiven Simpson ($\rightarrow$ quad Matlab)
 \end{remark}
 
 Bezeichne 
@@ -97,6 +153,101 @@ Bezeichne
 $$h = b - a$$
 $$T(h) = Q_a^b(f)$$
 $$T(\frac{h}{2}) = Q_a^{a+\frac{h}{2}}(f) + Q_{a+\frac{h}{2}}^b(f)$$
-$$Q(h) extrapolierter Wert$$
+$$Q(h):= \text{extrapolierter Wert}$$
 
-Grundstruktur eines adaptiven Quadraturalgorithmus. TODO
+Grundstruktur eines adaptiven Quadraturalgorithmus:
+
+\begin{algorithm}
+	\caption{adapt($f$,$a$,$b$,$TOL$,$LMIN$)}
+	\begin{algorithmic}
+		\STATE Berechne $T(h),T(\frac{h}{2}),Q(h)$
+		\IF{$|Q(h)-T(\frac{h}{2})|\leq TOL$}
+			\STATE return $Q(h)$
+		\ELSIF{$(b-a)\leq LMIN$}
+			\STATE warning: Minimale Intervalllänge wird unterschritten
+			\STATE return $Q(h)$
+		\ELSE
+			\STATE $I$=adapt($f$,$a$,$\frac{a+b}{2}$,$\frac{TOL}{2}$,$LMIN$)+ adapt($f$,$\frac{a+b}{2}$,$b$,$\frac{TOL}{2}$,$LMIN$)
+			\STATE return $I$
+		\ENDIF
+	\end{algorithmic}
+\end{algorithm}
+
+\emph{Frage:} Wie erhält man die Extrapolation $Q(h)$?
+
+\begin{theorem}
+[Satz I.8] Abgeschnittene Euler-Maclaurin Summenformel
+\\
+	Sei $f\in C^{3}([a,b])$, so gilt
+	\begin{enumerate}
+		\item $E(h):=\int_{a}^{b}f(x)dx - T(h)=-\frac{1}{12}\cdot h^{2}\cdot \int_{a}^{b}f^{(2)}(x)dx$
+		\item $E(\frac{h}{2}):=\int_{a}^{b}f(x)dx - T(\frac{h}{2})=-\frac{1}{48}\cdot h^{2}\cdot\int_{a}^{b}f^{(2)}(x)dx$
+	\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+	Wir schreiben $O(h^{l})$ für den Ausdruck $A(h,g)$, falls $|A(h,g)|\leq C(g)\cdot h^{l}\quad 0<h\leq h_{0}$
+\end{remark}
+
+Der Satz I.8 liefert eine Möglichkeit $Q(h)$ zu berechnen. Es gilt: 
+$$\int_{a}^{b}f(x)dx =T(h)-\frac{1}{12}\cdot h^{2} \int_{a}^{b}f^{(2)}(x)dx + O(h^{3})$$
+$$4\cdot \int_{a}^{b}f(x)dx=4\cdot T(\frac{h}{2})-\frac{1}{12}\cdot h^{2}\int_{a}^{b}f^{(2)}(x)dx + O(h^{3})$$
+$$3\cdot \int_{a}^{b}f(x)dx=4\cdot T(\frac{h}{2})-T(h)+O(h^{3})$$
+Definiere $Q(h):=\frac{1}{3}(4\cdot T(\frac{h}{2})-T(h))$
+Damit ist $Q(h)$ eine verbesserte Approximation durch die Elimination des führenden Fehlerterms $h^{2}$.
+
+\subsection{Romberg-Quadratur}
+Idee: Um die Approximation zu verbessern wird eine einfache Basisintegration mit Extrapolationstechniken kombiniert.
+\begin{remark}
+	Die Romberg-Quadratur wird meist mit der Trapezregel verwendet
+\end{remark}
+
+\begin{theorem}
+	[Satz I.9] Euler-MacLaurin'sche Summenformel
+	\\
+	Es sei $f\in C^{2m+2}([0,1])$, so gilt:
+	$$\int_{0}^{1}f(x)dx=\frac{1}{2}f(0)+\frac{1}{2}f(1)+\sum_{k=1}^{m}(\frac{B_{2k}}{2k!}\cdot (f^{(2k+1)}(0)-f^{(2k+1)}(1))) 
+	- \frac{B_{2m+2}}{(2m+1)!}\cdot f^{(2m+2)}(\xi) \quad 0<\xi<1$$
+	mit $B_{2k}$ sind die Bernoulli-Zahlen
+\end{theorem}
+
+\begin{corollary}
+	[Korollar I.10]
+	Für die summierte Trapezregel gilt:
+	$$T_{f}(h)=\int_{a}^{b}f(x)dx+\sum_{k=1}^{m}\tau_{k}\cdot h^{2k}+R_{m}(h)$$
+\end{corollary}
+
+\begin{definition}
+	[Definition I.11] Romberg-Quadratur
+	\\
+	Man bestimmt das Interpolationspolynom $\Pi_{h}$ durch die Punkte $(h_{i}^{2},T_{f}(h_{i}))$ mit $i=0,\ldots,n$ und man wertet
+	$\Pi_{h}$ an der Stelle $x=0$  aus. $\Pi_{h}(0)$ ist die Approximation für $\int_{a}^{b}f(x)dx$. In der Praxis wählt man:
+	\begin{description}
+		\item[Romberg-Folge] $h_{i}=\frac{1}{2}h_{i-1}=\frac{b-a}{2^{i}}$
+		\item[Bulirsch-Folge] $h_{i}=\frac{b-a}{n_{i}}\cdot h_{0}$  mit $n_{i}=
+		\begin{cases}
+			2^{k+1}&i=2k+1,k=0,\ldots\\
+			3\cdot 2^{k}&i=2k,k=1,\ldots\\
+			1 & i=0	
+		\end{cases}$
+	\end{description}
+	Die Rekursionsformel für das Interpolationstableau lautet
+	$$T_{i,0}=T(h_{i})$$
+	$$T_{i,j}=T_{i,j-1}+\frac{T_{i,j-1}-T_{i-1,j-1}}{\left(\frac{h_{i-j}}{h_{i}}\right)^{2}-1}$$
+\end{definition}
+
+\begin{theorem}
+	[Satz I.12] Fehlerabnahme der Romberg-Quadratur
+	\\
+	In der $k$-Spalte des Interpolationstableau
+	\begin{description}
+		\item[Rhombergfolge:] $\left(\frac{1}{2}\right)^{2(k+1)}$
+		\item[Bulirschfolge:] $\left(\frac{1}{\sqrt{2}}\right)^{2(k+1)}$
+	\end{description}
+	Allgemein:
+	$$|T_{i,j}-\int_{a}^{b}f(x)dx| \leq C_{j}\cdot h_{i}^{2}\cdot \ldots \cdot h_{i+j}^{2}$$
+\end{theorem}
+
+\begin{remark}
+Wenn eine Funktion nicht oft stetig differenzierbar ist, dann ist die Romberg-Quadratur ungeeignet und man sollte die Simpsonsummenformel verwenden.
+\end{remark}

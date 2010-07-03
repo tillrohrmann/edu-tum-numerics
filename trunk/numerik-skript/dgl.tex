@@ -191,7 +191,7 @@ dargestellt werden. $\phi$ nennt man dann Verfahrensfunktion oder Inkrementfunkt
 	\end{enumerate}
 \end{definition}
 
-Das zentrale Hilsmittel zur Bestimmung der Konsistenzordnung ist die Taylerentwicklung.
+Das zentrale Hilsmittel zur Bestimmung der Konsistenzordnung ist die Taylorentwicklung.
 
 \begin{lemma}
 	Ein Einschrittverfahren ist genau dann konsistent, falls für $h \to 0$ gilt:
@@ -212,7 +212,7 @@ Das zentrale Hilsmittel zur Bestimmung der Konsistenzordnung ist die Taylerentwi
 	\*
 	\begin{enumerate}
 		\item
-			Der expliziter Euler ist von Konvergenzordnung 1:
+			Der expliziter Euler ist von Konsistenzordnung 1:
 			
 			\begin{align*}
 				\tau\left(t,y,h\right) &= \frac{1}{h} \left(y + f\left(t,y\right) h + \frac{1}{2} \left(f_t\left(t,y\right) + f_y\left(t,y\right) f\left(t,y\right)\right) h^2 + \OO{h^3} - y - hf\left(t,y\right)\right) \\
@@ -220,10 +220,10 @@ Das zentrale Hilsmittel zur Bestimmung der Konsistenzordnung ist die Taylerentwi
 			\end{align*}
 			
 		\item
-			Das Verfahren von Heun ist von Konvergenzordnung 2:
+			Das Verfahren von Heun ist von Konsistenzordnung 2:
 			
 			\begin{align*}
-				z(t+h,t,y) &= y+f h + \frac{1}{2} h^2 (f_t + f_yf) + \frac{1}{6} h^3(f_{tt} + f_{ty}f + f_{ty} f + f_{yy}f^2 + f_yf_t + f_y^2 f) + \OO{h^4} \\
+				z(t+h,t,y) &= y+f h + \frac{1}{2} h^2 (f_t + f_yf) + \frac{1}{6} h^3(f_{tt} + f_{ty}f + f_{yt} f + f_{yy}f^2 + f_yf_t + f_y^2 f) + \OO{h^4} \\
 				\phi(t,h,y) &= \frac{1}{2} ( f(t,y) + f(T+h, y+hf(t,y))) \\
 				&= \frac{1}{2} (f + f + hf_t + h f f_y + \frac{1}{2} h^2 f_{tt} + \frac{1}{2} 2 h h f f_{ty} + \frac{1}{2} h^2 f^2 f_{yy} + \OO{h^3})
 			\end{align*}
