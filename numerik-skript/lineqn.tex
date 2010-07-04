@@ -1,0 +1,135 @@
+\section{Iterative Löser für lineare Gleichungssysteme}
+\subsection{Aufgabenstellung}
+Gesucht ist $x\in \mathbb{R}^{n}$, so dass $Ax=b$ mit $A\in \mathbb{R}^{n\times n}, det(A)\not = 0,b\in \mathbb{R}^{n}$. Vorüberlegung:
+\begin{enumerate}
+	\item Liegt eine Bandmatrix mit Bandbreite $w$ vor, so ist der Aufwand zum exakten Lösen in $O(nw^{2})$
+	\item Liegt eine dünnbesetzte Matrix vor, so ist der Aufwand einer Matrix-Vektor-Multiplikation in $O(n)$
+\end{enumerate}
+
+\begin{definition}
+	[Definition III.1] Iterationsverfahren
+	\begin{enumerate}
+		\item Ein Lösungsverfahren zur Berechnung von $x$ mit $Ax=b$ heißt iterativ, falls ausgehend
+		von einem Startwert $x^{0}$ eine Folge $x^{k}$ von Iterierten bestimmt wird.
+		\item Ein Iterationsverfahren heißt konvergent, falls für alle $b$ und alle $x^{0}$ die Folge $x^{k}$ gegen $x$ konvergiert,
+		d.h. $\lim_{k\rightarrow \infty} x^{k}=x$
+		\item Ein Iterationsverfahren heißt konsistent, falls die Lösung $x$ Fixpunkt ist, d.h. falls $x^{k}=x\Rightarrow x^{k+1}=x$
+	\end{enumerate}
+\end{definition}
+
+\subsection{Lineare Iterationsverfahren}
+
+\begin{definition}
+	[Definition III.2] Lineare Iterationsverfahren
+	\\
+	Ein Iterationsverfahren heißt linear, falls $x^{k+1}=Mx^{k}+Nb$ mit $M,N\in \mathbb{R}^{n\times n}$
+\end{definition}
+
+\begin{theorem} Konsistente lineare Iterationsverfahren
+\\
+Ein lineares und konsistentes Iterationsverfahren hat die Form:
+$$x^{k+1}=x^{k}+N(b-Ax^{k})$$, d.h. $M=(Id-NA)$
+\end{theorem}
+
+\begin{theorem} Fehler
+	\begin{enumerate}
+		\item Für den Fehler $e^{k}=x-x^{k}$ gilt folgende Rekursion:
+		$$e^{k+1}=M\cdot e^{k}=M^{k+1}\cdot e^{0}$$
+		\item Ein lineares konsistentes Iterationsverfahren ist genau dann konvergent, falls $\rho(M)<1$ mit $\rho(M)$ der
+		Spektralradius von $M$ (größter Eigenwert)
+	\end{enumerate}
+\end{theorem}
+\begin{remark}
+	$\rho(M)$  ist die Konvergenzrate
+\end{remark}
+
+\begin{definition}
+	[Definition III.3] Lineare Iterationsverfahren
+	\\
+	Zerlege $A=L+D+U$
+	\begin{description}
+		\item[Richardson-Verfahren]
+			$$x^{k+1}=x^{k}+w(b-Ax^{k}),\quad N=w\cdot Id \text{ mit $w$ Dämpfungsfaktor}$$
+		\item[Jacobi-Verfahren]
+			$$x^{k+1}=x^{k} + D^{-1}(b-Ax^{k}),\quad N=D^{-1},\quad M=-D^{-1}(L+U)$$
+			$$x_{l}^{k+1}=x_{l}^{k}+\frac{(b_{l}-\sum_{i=1}^{n}a_{l,i}\cdot x_{i}^{k})}{a_{l,l}}$$
+		\item[Gauß-Seidel-Verfahren]
+			$$x^{k+1}=x^{k}+(D+L)^{-1}(b-Ax^{k},\quad N=(D+L)^{-1},\quad M=-(D+L)^{-1}U$$
+			$$x_{l}^{k+1}=x_{l}^{k}+\frac{(b_{l}-(\sum_{i=1}^{l-1}a_{l,i}\cdot x_{i}^{k+1} + \sum_{i=l}^{n}a_{l,i}\cdot x_{i}^{k}))}{a_{l,l}}$$
+		\item[SOR-Verfahren]
+			$$x^{k+1}=x^{k} + w(D+wL)^{-1}(b-Ax^{k}),\quad N=w(D+wL)^{-1}$$
+			$$M=Id-w(D+wL)^{-1}A$$
+	\end{description}
+\end{definition}
+
+\begin{remark}
+	\begin{enumerate}
+		\item Die Verfahren sind wohldefiniert, falls $a_{i,i}\not = 0$. Dies gilt z.B. für $A$ positiv definit oder $A$ diagonal dominant
+		\item Das Richardson-Verfahren und das Jacobi-Verfahren sind unabhängig von der Indexanordnung. Das Gauß-Seidel- und das
+		SOR-Verfahren sind abhängig von der Indexanordnung.
+		\item Das Gauß-Seidel- und das SOR-Verfahren existieren auch in einer rückwärtigen bzw. symmetrischen Variante. Bei der 
+		rückwärtigen Variante wird in der Definition von $N$ die Matrix $L$ durch $U$ ersetzt. Bei der symmetrischen Variante
+		wird ein Standardhalbschritt und eine Rückwärtshalbschritt durchgeführt.
+		\item Der Aufwand der Verfahren ist bei dünnbesetzten Matrizen $O(n)$ 
+	\end{enumerate}
+\end{remark}
+\subsection{Konvergenzaussagen}
+\begin{definition}
+	[Definition III.4] Fehlerreduktion
+	\\
+	Man definiert:
+	$$It(M)=-\frac{1}{ln(\rho(M))}$$
+	als Maß für die Qualität des Verfahrens. Hierbei gibt $It(M)$ asymptotisch die Anzahl der Iterationsschritte für eine Fehlerreduktion
+	von $\frac{1}{e}$ an.
+\end{definition}
+
+\begin{theorem}
+	Konvergenzaussagen
+	\\
+	Sei die Matrix $A$ symmetrisch und positiv definit, dann konvergieren
+	\begin{enumerate}
+		\item Das Richardson-Verfahren für $w$ mit $0<w<\frac{2}{\lambda_{max}}$. Die optimale Konvergenzrate erhält man für
+		$$w_{opt}=\frac{2}{\lambda_{max}+\lambda_{min}}\Rightarrow \rho(M_{opt})=1-\frac{2\lambda_{min}}{\lambda_{max}+\lambda_{min}}$$
+		\item Das Jacobi-Verfahren konvergiert, falls $2D-A$ positiv definit ist.
+		\item Das Gauß-Seidel-Verfahren konvergiert
+		\item Das SOR-Verfahren koknvergiert für $0<w<2$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+	Konvergenzrate
+	\\
+	Sei $A$ symmetrisch positiv definit und $0<w<2$. Des Weiterne wird gefordert, dass die Eigenwerte der Matrix $B(z)=zD^{-1}L+\frac{1}{z}D^{-1}U$
+	unabhängig von $z\in \mathbb{C}\\ \{0\}$ sind. Dann gilt:
+	\begin{enumerate}
+		\item $\rho(M_{Jac})=:\beta<1$
+		\item $\rho(M_{GS})=\rho(M_{Jac})^{2}$ (d.h. das Gauß-Seidel-Verfahren benötigt habl so viele Schritte wie das Jacobi-Verfahren)
+		\item $\rho(M_{SOR,w})=
+		\begin{cases}
+		w-1 & w_{opt}\leq w<2\\
+		1-w+\frac{1}{2}w^{2}\beta^{2}+w\beta\sqrt{1-w+\frac{w^{2}\beta^{2}}{4}} & 0 < w < w_{opt}
+		\end{cases}$
+	\end{enumerate}
+	$w_{opt}=\frac{2}{1+\sqrt{1-\beta^{2}}}\geq 1$
+\end{theorem}
+
+\begin{remark}
+	In der Regel ist $w_{opt}$ nicht berechenbar, da $\beta$ unbekannt ist. Ausweg: Adaptive Bestimmung einer Näherung $w_{opt}$.
+\end{remark}
+
+\subsection{Das konjugierte Gradientenverfahren (CG)}
+Für symmetrisch positiv definite Matrizen $A$ gibt es ein nichtlineares Verfahren, welches im Vergleich zum
+\begin{itemize}
+	\item Gauß-Seidel deutlich schneller ist
+	\item SOR mit $w_{opt}$ wird keine Zusatzinformation benötigt
+\end{itemize}
+Die Vorstufen des CG-Verfahrens sind
+\begin{itemize}
+	\item konjugierte Richtungsverfahren
+	\item Gradientenverfahren
+\end{itemize}
+
+\begin{theorem}
+	Sei $A$ symmetrisch positiv definit, so gilt: $Ax=b \Leftrightarrow F(x)\leq F(y),\ y\in \mathbb{R}^{n}$ 
+	mit $F(y)=\frac{1}{2}y^{T}Ay-b^{T}y$
+\end{theorem}
