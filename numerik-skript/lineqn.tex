@@ -133,3 +133,119 @@ Die Vorstufen des CG-Verfahrens sind
 	Sei $A$ symmetrisch positiv definit, so gilt: $Ax=b \Leftrightarrow F(x)\leq F(y),\ y\in \mathbb{R}^{n}$ 
 	mit $F(y)=\frac{1}{2}y^{T}Ay-b^{T}y$
 \end{theorem}
+
+\subsubsection{Verfahren der konjugierten Richtungen}
+\begin{definition}
+	[Definition III.5] A-orthogonal
+	\\
+	Die Suchrichtungen $p^{0},p^{1},\ldots$ heißen A-orthogonal $\Leftrightarrow \langle p^{l},Ap^{k}\rangle=0$ mit $l\not = k$
+\end{definition}
+
+\begin{algorithm}
+	\caption{Konjugierte Richtungen}
+	\begin{algorithmic}
+		\STATE  Seien $A$ symmetrisch positiv definit, $x^{0}$, und $p^{0},p^{1},\ldots,p^{n-1}$ A-othogonal
+		\STATE $r^{0}=b-Ax^{0}$
+		\FOR{$k=0$ to $n-1$}
+			\STATE $\alpha_{k} = \frac{\langle p^{k},r^{k}\rangle}{\langle p^{k},Ap^{k}\rangle}$
+			\STATE $x^{k+1} = x^{k} + \alpha_{k}p^{k}$
+			\STATE $r^{k+1} = r^{k} - \alpha_{k}Ap^{k}$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+	$x^{n}=x$
+\end{theorem}
+\begin{remark}
+	Nachteile
+	\begin{enumerate}
+		\item Im ungünstigsten Fall passiert $(n-1)$-Mal nichts
+		\item A-orthogonale Suchrichtungen sind teuer zu konstruieren
+	\end{enumerate}
+\end{remark}
+
+\subsubsection{Gradientenverfahren}
+
+\begin{algorithm}
+	\caption{Gradientenverfahren}
+	\begin{algorithmic}
+		\STATE  Seien $A$ symmetrisch positiv definit, $x^{0}$
+		\STATE $r^{0}=b-Ax^{0}, p^{0}=r^{0}$
+		\FOR{$k=0$ to $\infty$}
+			\STATE $\alpha_{k} = \frac{\langle p^{k},r^{k}\rangle}{\langle p^{k},Ap^{k}\rangle}$
+			\STATE $x^{k+1} = x^{k} + \alpha_{k}p^{k}$
+			\STATE $r^{k+1} = r^{k} - \alpha_{k}Ap^{k}$
+			\STATE $p^{k+1}=r^{k+1}$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+	Beobachtung $x^{k+1}=x^{k}+\alpha_{k}(b-Ax^{k})$. Gleiche Struktur wie das Richardson-Verfahren. Aber $\alpha_{k}$ ist von $k$
+	abhängig und damit ist es kein lineares Verfahren.
+\end{remark}
+
+\begin{theorem}
+	Konvergenz
+	\\
+	$$||x^{k}-x||_{A}\leq \left( \frac{\kappa - 1}{\kappa +1}\right)^{k}\cdot || x^{0}-x||_{A}$$
+	mit $\kappa = \frac{\lambda_{max}}{\lambda_{min}}$ und $||y||^{2}_{A}=\langle y, Ay \rangle$ ist die Energienorm.
+\end{theorem}
+
+\begin{description}
+	\item[Vorteil] Das Gradientenverfahren konvergiert genauso gut wie das optimal gedämpfte Richardson-Verfahren ohne dessen Zusatzinformationen
+					zu benötigen.
+	\item[Nachteil] Minimierungseigenschaft bzgl. vorausgegangener Suchrichtungen geht i.d.R. verloren.
+\end{description}
+
+\subsubsection{CG-Verfahren}
+Grundidee:
+\begin{itemize}
+	\item Baue im Lauf der Iteration ein System von $\dim$ unabhängigen A-orthogonale Suchrichtungen auf.
+	\item Korrigiere die Suchrichtungen des Gradientenverfahrens
+\end{itemize}
+
+\begin{algorithm}
+	\caption{CG}
+	\begin{algorithmic}
+		\STATE $A$ symmetrisch positiv definit, $x^{0}$, $b$
+		\STATE $p^{0} = r^{0} = b- Ax^{0}$
+		\FOR{$k=0$ to $\infty$}
+			\STATE $\alpha_{k}=\frac{\langle r^{k},p^{k}\rangle}{\langle A p^{k},p^{k}\rangle}$
+			\STATE $x^{k+1} =  x^{k} + \alpha_{k} p^{k}$
+			\STATE $r^{k+1} = r^{k} - \alpha_{k}Ap^{k}$
+			\STATE $\beta_{k} = - \frac{\langle r^{k+1},Ap^{k}\rangle}{\langle p^{k},Ap^{k}\rangle}$
+			\STATE $p^{k+1} = r^{k+1} + \beta_{k}p^{k}$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+	Orthogonalitäten:
+	\begin{itemize}
+		\item $\langle r^{k+1}, p^{k}\rangle$
+		\item $\langle p^{k+1},Ap^{k}\rangle$
+	\end{itemize}
+\end{remark}
+
+\begin{theorem}
+	Äquivalente Darstellung
+	\\
+	\begin{itemize}
+		\item $\alpha_{k}=\frac{||r^{k}||_{2}^{2}}{||p^{k}||_{A}^{2}}$
+		\item $\beta_{k} = \frac{||r^{k+1}||^{2}_{2}}{||r^{k}||^{2}_{2}}$
+	\end{itemize}
+\end{theorem}
+
+
+\begin{theorem}
+	Eigenschaften der Suchrichtungen
+	\\
+	Sei $x^{l}\not = x$ für $l=0,\ldots,k$ so gilt
+	\begin{enumerate}
+		\item $\langle r^{l},p^{j}\rangle=0\quad 0\leq j<l\leq k$
+		\item $\langle r^{l},r^{j}\rangle=0\quad 0\leq j<l\leq k$
+		\item $\langle p^{l},Ap^{j}\rangle =0 \quad 0\leq j<l\leq k$
+	\end{enumerate}
+\end{theorem}
