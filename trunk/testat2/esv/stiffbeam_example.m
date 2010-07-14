@@ -10,10 +10,10 @@ T = 5;
 S = 4;
 
 % right hand side
-f = @BEAMODE;  % WAS: f = 'BEAMNODE';
+f = @(t,y)(BEAMODE(t,y));
 
 % Jacobian of the right hand side
-df = @BEAMJAC; % WAS: df = 'BEAMJAC';
+df = @JAC;
 
 % initial conditions
 t0 = 0;
@@ -32,23 +32,24 @@ for ii = 1:length(Nvec)
   h = (T-t0)/N;
   
   % Crank-Nicholson with Newton iteration
-  % [t,y,iter] = OSM(t0,y0,h,N,@CN_STEP_NEWTON,f,df); % WAS: [t,y,iter] = OSM(t0,y0,h,N,@CN_STEP_NEWTON,f);
   
+  [t,y,iter] = OSM(t0,y0,h,N,@CN_STEP_NEWTON,f,df);
+   
   % graphical output 
-%  figure(ii)
-%  subplot(2,2,1)
-%  plotbeam(N,S,y,t);
-%  hold on;
-%  str = sprintf('Crank-Nicolson + Newton, \n%d time steps',N);
-%  title(str, 'fontsize', 14);
-%  set(gca, 'fontsize', 14);
+  figure(ii)
+  subplot(2,2,1)
+  plotbeam(N,S,y,t);
+  hold on;
+  str = sprintf('Crank-Nicolson + Newton, \n%d time steps',N);
+  title(str, 'fontsize', 14);
+  set(gca, 'fontsize', 14);
 
-%  subplot(2,2,3)
-%  plot(1:N,iter,'b-','Linewidth',2)
-%  hold on;
-%  title('Number of Newton iterations','fontsize', 14);
-%  set(gca,'fontsize',14);
-%  xlim([1 N]);
+  subplot(2,2,3)
+  plot(1:N,iter,'b-','Linewidth',2)
+  hold on;
+  title('Number of Newton iterations','fontsize', 14);
+  set(gca,'fontsize',14);
+  xlim([1 N]);
   
   % Crank-Nicholson with fixed point iteration
   [t,y,iter] = OSM(t0,y0,h,N,@CN_STEP_FIXEDPOINT,f);
