@@ -1,0 +1,62 @@
+\documentclass[german]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{german}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{xcolor}
+\usepackage{float}
+\setlength{\parindent}{0cm}
+\setlength{\parindent}{0cm}
+\author{Johannes Reifferscheid, Till Rohrmann}
+\title{
+	Matlab-Tutorial 2
+}
+
+\begin{document}
+	\maketitle
+ 
+   \section*{Aufgabe 1 b)}
+   	\begin{figure}[H]
+   		\centerline{\includegraphics[height=7cm]{cg/cgFg.eps}}
+   		\caption{Anzahl der Iterationen zur approximativen Lösung einer Poissonmatrix}
+   	\end{figure}
+   	
+   	\subsection*{Interpretation der Konvergenz in Abhängigkeit der Vorkonditionierer}
+   		TODO:
+   		Die Kondition $\kappa(BA)$ wird am besten durch $B^{-1}=N_{SSOR}$ reduziert, weshalb die Konvergenz in diesem Fall am Besten ist.
+   		
+   \section*{Aufgabe 2 b)}
+   
+   	\begin{figure}[H]
+			\centerline{\includegraphics[height=7cm]{esv/esvFg1.eps}}
+			\caption{Anzahl der Beute in Abhängigkeit der Zeit}
+		\end{figure}
+		\begin{figure}[H]
+			\centerline{\includegraphics[height=7cm]{esv/esvFg2.eps}}
+			\caption{Anzahl der Räuber in Abhängigkeit der Zeit}
+		\end{figure}
+		\begin{figure}[H]
+			\centerline{\includegraphics[height=7cm]{esv/esvFg3.eps}}
+			\caption{Anzahl der Beute und Räuber}
+		\end{figure}
+		
+	\section*{Aufgabe 2 d)}
+		\begin{figure}
+		[H]
+			\centerline{\includegraphics[height=7cm]{esv/sbFg1.eps}}
+			\caption{Steifer Stab}
+		\end{figure}
+		\begin{figure}
+		[H]
+			\centerline{\includegraphics[height=7cm]{esv/sbFg2.eps}}
+			\caption{Steifer Stab}
+		\end{figure}
+		
+		\subsection*{Interpretation}
+			TODO:
+			Die Fixpunktiteration scheint bei zu großer Schrittweite $h$ zu divergieren und liefert somit keine brauchbaren Ergebnisse.
+			Im Gegensatz dazu liefert das Newtonverfahren auch bei großer Schrittweite $h$ gute Ergebnisse.
+
+\end{document}
