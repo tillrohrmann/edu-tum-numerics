@@ -45,7 +45,14 @@ if nargout(method) > 2
 % Don't output the number of Newton or fixed point iterations per time 
 % step.    
 else
-    for k=2:s+1
-        [t(k),y(:,k)] = method(t(k-1),y(:,k-1),h,f);
-    end         
+    if nargin <7
+        for k=2:s+1
+            [t(k),y(:,k)] = method(t(k-1),y(:,k-1),h,f);
+        end
+    else
+         for k=2:s+1
+            [t(k),y(:,k)] = method(t(k-1),y(:,k-1),h,f,df);
+         end
+    end
+        
 end
