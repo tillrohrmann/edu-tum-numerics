@@ -23,10 +23,15 @@
    		\caption{Anzahl der Iterationen zur approximativen Lösung einer Poissonmatrix}
    	\end{figure}
    	
-   	\subsection*{Interpretation der Konvergenz in Abhängigkeit der Vorkonditionierer}
-   		TODO:
-   		Die Kondition $\kappa(BA)$ wird am besten durch $B^{-1}=N_{SSOR}$ reduziert, weshalb die Konvergenz in diesem Fall am Besten ist.
-   		
+   	\subsection*{Interpretation}
+   		Das vorkonditionierte konjugierte Gradientenverfahren konvergiert am schnellsten mit der Matrix $N_{SSOR}$ als Vorkonditionierer.
+   		Etwas langsamer, jedoch schnneller als das nicht vorkonditionierte konjugierte Gradientenverfahren,
+   		konvergiert das Verfahren mit der Matrix $N_{SGS}$ als Vorkonditionierer. Im Gegensatz zu den Matrizen
+   		$N_{SSOR}$ und $N_{SGS}$ zeigt das Verfahren mit dem Vorkonditionierer $N_{Jac}$ keinerlei Verbesserung
+   		in der Konvergenzeigenschaft im Vergleich zum unkonditionierten Verfahren. Folglich reduziert die Matrix
+   		$N_{SSOR}$ die Konditionszahl der Matrix $A$ am stärksten und es gilt in diesem Fall: 
+   		$\kappa({N_{SSOR}A}) < \kappa({N_{SGS}A}) < \kappa({N_{Jac}A})=\kappa({A})$
+   	
    \section*{Aufgabe 2 b)}
    
    	\begin{figure}[H]
@@ -55,8 +60,13 @@
 		\end{figure}
 		
 		\subsection*{Interpretation}
-			TODO:
-			Die Fixpunktiteration scheint bei zu großer Schrittweite $h$ zu divergieren und liefert somit keine brauchbaren Ergebnisse.
-			Im Gegensatz dazu liefert das Newtonverfahren auch bei großer Schrittweite $h$ gute Ergebnisse.
-
+			Das Newton-Verfahren benötigt deutlich weniger Iterationsschritte zum Finden einer approximativen Lösung
+			für jeden Zeitschritt des Crank-Nicolson-Verfahrens als die Fixpunktiteration. Jedoch kann im Allgemeinen
+			nicht geschlussfolgert werden, dass das Newton-Verfahren effizienter ist, weil die Berechnung eines
+			einzelnen Iterationsschritt die Auswertung der Ableitung und unter Umständen das Lösen eines linearen
+			Gleichungssystem beinhaltet. Darüber hinaus ist die Kenntnis der Ableitung notwendig.
+			
+			Auffällig ist des Weiteren, dass die Fixpunktiteration bei der Wahl einer zu großen zeitlichen Schrittweite $h$
+			nicht gegen den Fixpunkt konvergiert. Folglich ist die approximative Lösung für die Differentialgleichung nicht zu gebrauchen.
+			Das Newton-Verfahren zeigt diese Schwächen auch bei großer Schrittweite $h$ nicht und liefert ordentliche Ergebnisse.
 \end{document}

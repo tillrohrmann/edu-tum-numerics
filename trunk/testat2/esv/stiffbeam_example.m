@@ -23,7 +23,7 @@ y0 = [y00; v00];
 
 %% Solve ODE and plot results.
 % number of time steps
-Nvec = [100;200];
+Nvec = [10;50;100;200];
 
 for ii = 1:length(Nvec)
   % different number of space steps 
