@@ -249,3 +249,62 @@ Grundidee:
 		\item $\langle p^{l},Ap^{j}\rangle =0 \quad 0\leq j<l\leq k$
 	\end{enumerate}
 \end{theorem}
+
+\begin{definition}
+[Definition III.6] Krylovraum $K_{l}$
+\\
+	$K_{l}:=K_{l}(r^{0},A):=span\{r^{0},Ar^{0},A^{2}r^{0},\ldots,A^{l-1}r^{0}\}$
+\end{definition}
+
+\begin{theorem}
+	Suchrichtungen
+	\\
+	Für den Raum der Suchrichtungen $V_{k} :=span\{p^{0},p^{1},\ldots,p^{k-1}\}$ gilt: $V_{k}=K_{k}$ falls $x^{l}\not = x,l=0,\ldots,k$
+\end{theorem}
+
+\begin{theorem}
+	Konvergenzaussage für das CG
+	\\
+	Sei $A$ symmetrisch positiv definit, so gilt für den Fehler $e^{k}$
+	$$||e^{k}||_{A}\le \frac{2c^{k}}{1+c^{2k}}\cdot ||e^{0}||_{A}\quad c:=\frac{\sqrt{\kappa(A)}-1}{\sqrt{\kappa(A)}+1}$$
+\end{theorem}
+
+\begin{remark}
+	Das CG-Verfahren konvergiert deutlich schneller als das Gradientenverfahren. Aber beide Verfahren konvergieren langsam, falls $\kappa(A)>>1$
+\end{remark}
+
+\subsubsection{Vorkonditionierte CG-Verfahren}
+Sei $A$ symmetrisch positiv definit mit $\kappa(A)>>1$ und $B$ sei symmetrisch positiv definit mit $\kappa(AB)<<\kappa(A)$. Dann
+ist
+\begin{enumerate}
+	\item $Ax=b \Leftrightarrow B^{\frac{1}{2}}AB^{\frac{1}{2}}y=B^{\frac{1}{2}}b\quad x=B^{\frac{1}{2}}$
+	\item Die Konvergenz des CG-Verfahren angewendet auf $B^{\frac{1}{2}}AB^{\frac{1}{2}}y=B^{\frac{1}{2}}b$ ist deutlich schneller als
+	das CG-Verfahren angewandt auf $Ax=b$
+\end{enumerate}
+
+\begin{algorithm}
+	\caption{Vorkonditioniertes CG-Verfahren}
+	\begin{algorithmic}
+		\STATE $A,B s.p.d.,b,x^{0}$
+		\STATE $r^{0}=b-Ax^{0}$
+		\STATE $p^{0}=Br^{0}$
+		\STATE $\alpha_{0}=\langle r^{0},p^{0}\rangle$
+		\FOR{$k=0$ to $size(A,1)$ if $\alpha_{k}\not = 0$}
+			\STATE $v=Ap^{k}$
+			\STATE $\lambda = \frac{\alpha_{k}}{\langle p^{k},v\rangle}$
+			\STATE $x^{k+1}=x^{k}+\lambda p^{k}$
+			\STATE $r^{k+1}=r^{k} - \lambda v$
+			\STATE $z=Br^{k+1}$
+			\STATE $\alpha_{k+1}=\langle r^{k+1},z\rangle$
+			\STATE $p^{k+1} = z + \frac{\alpha_{k+1}}{\alpha_{k}}p^{k}$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+	Ein guter Vorkonditionierer erfüllt:
+	\begin{enumerate}
+		\item $\kappa(AB)=O(1)$
+		\item $By\rightarrow $ Aufwand $O(n)$
+	\end{enumerate}
+\end{remark}
