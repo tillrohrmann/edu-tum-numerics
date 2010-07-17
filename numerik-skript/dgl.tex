@@ -561,7 +561,7 @@ Dann ist das Kollokationsverfahren äquivalent mit dem so definierten RKV.
 
 % 9. Juli 2010
 
-\begin{theorem}[Satz IV.7] Ordnung.
+\begin{theorem} Ordnung.
 
 	Seien $\alpha_j \in [0, 1]$ paarweise verschiedene Knoten einer Quadraturformel über $[0,1]$ mit den Gewichten $\gamma_j\;\;1 \le j \le s$, dann definiert die Wahl 
 
@@ -636,3 +636,186 @@ Achtung: $\delta(t_j, y_j, h_j)$ ist nicht berechenbar. Um $\delta(t_j, y_j, h_j
 	\item
 \end{itemize}
 
+%Fehlender Teil der Schrittweitensteuerung
+
+\begin{definition}
+	[Definition III.6] Ein explizites RKV$p(\hat p)$ hat die Form:
+	$$\begin{array}{c|ccc}
+			\alpha_1 & \beta_{11} & \dots & \beta_{1s} \\
+			\vdots   & \vdots     &       & \vdots \\
+			\alpha_s & \beta_{s1} & \dots & \beta_{ss} \\
+			\hline & \gamma_{1} & \dots & \gamma_{s} \\
+			\hline & \hat \gamma_{1}& \ldots & \hat \gamma_{s}
+		\end{array}$$
+		Mit $y^{i+1}=y^{i}+h_{i}\sum_{l=1}^{s}\gamma_{l}k_{l}$ und $\hat y^{i+1}= y^{i}+ h_{i}\sum_{l=1}^{s}\hat \gamma_{l}k_{l}$.
+		Zur Berechnung der $k_{l}$ werden die $y^{i}$ verwendet. Ein RKV heißt FSAL (first same as last), falls $k_{1}^{neu}=k_{s}^{alt}$.
+\end{definition}
+
+\begin{remark}
+	FSAL
+	\begin{itemize}
+		\item Ein RKV ist genau dann ein FSAL, falls $\gamma_{l}=\beta_{s,l}$ für $l=1,\ldots,s$
+		\begin{eqnarray*}
+			k_{s}^{alt} &=& f(t_{i}+\alpha_{s}h_{i},y^{i}+h_{i}\sum_{l=1}^{s}\beta_{s,l}k_{l}^{alt})\\
+			k_{1}^{neu} &=&f(t_{i}+h_{i},y^{i+1})=f(t_{i}+h_{i},y^{i}+h_{i}\sum_{l=1}^{s}\gamma_{l}k_{l}^{alt})
+		\end{eqnarray*}
+		\item Ein $s$-stufiges explizites FSAL ist so aufwendig, wie ein $(s-1)$-stufiges explizites RKV
+	\end{itemize}
+	
+	Damit eignen sich eingebettete RKV und insbesondere FSAL hervorragend zur Schrittweitensteuerung.
+	Viele frühe Varianten stammen von Fehlberg und sind RKV$p(p+1)$. Diese werden heute kaum noch verwendet, da:
+	\begin{itemize}
+		\item das Verfahren geringerer Ordnun liefert die Approximation
+		\item die Koeffizienten werden so bestimmt, dass der führende Fehlerterm der Ordnung $p$ minimiert wird $\Rightarrow$ Unterschätzung
+		des Fehlers $\Rightarrow$ zu optimistisches $h$
+	\end{itemize}
+	Moderne Verfahren sind RKV$p(\hat p)$, $p>\hat p$. Diese Varianten gehen auf Dormand und Prince zurück. Vorteile gegenüber Fehlberg:
+	\begin{itemize}
+		\item Das Verfahren höherer Ordnung bestimmt die Approximation
+		\item Die Koeffizienten werden bzgl. der höheren Ordnung optimiert
+		\item Die Schrittweitenwahl ist der eher sicherheitsorientiert
+	\end{itemize}
+\end{remark}
+
+\subsection{Lineare Mehrschrittverfahren (MSV)}
+\begin{definition}
+	[Definition IV.7] Lineare MSV
+	\\
+	Ein lineares $k$-Schritt-Verfahren hat die Form
+	$$y^{i+1}=\sum_{j=0}^{k-1}a_{j}y^{i-j} + h\sum_{j=-1}^{k-1}b_{j}\underbrace{f(t_{i-j},y^{i-j})}_{f_{i-j}}$$
+	$a_{j},b_{j},b_{-1}\in \mathbb{R},a_{k-1}\not = 0$ oder $b_{k-1}\not = 0$.
+	\\
+	Achtung: MSV benötigen eine Anlaufrechnung
+\end{definition}
+
+\begin{example} MSV
+	\begin{enumerate}
+		\item $y^{i+1}=y^{i-1}+2hf(t_{i},y^{i})$ ist ein 2-Schrittverfahren mit den Koeffizienten $a_{0}=0,a_{1}=1,b_{-1}=0,b_{0}=2,b_{1}=0$
+		und ist ein explizites Verfahren.
+		\item $y^{i+1}=y^{i-1}+\frac{1}{3}h(f_{i-1}+4f_{i}+f_{i+1})$ ist ein 2-Schrittverfahren mit $a_{0}=0,a_{1}=1,b_{-1}=\frac{1}{3},b_{0}=\frac{4}{3},b_{1}=\frac{1}{3}$.
+	\end{enumerate}
+\end{example}
+
+\begin{remark}
+	Das MSV heißt implizit, falls $b_{-1}\not = 0$ ist, sonst explizit.
+\end{remark}
+
+Es gibt 2 große Klassen von linearen MSV
+\begin{itemize}
+	\item Adams-Verfahren
+	\item BDF-Verfahren
+\end{itemize}
+
+Beiden Verfahrensklassen liegt die Idee der Polynominterpolation zugrunde. Kombiniert man diese Verfahren geeignet, so entstehen
+nichtlineare Varianten, die verbesserte Eigenschaften aufweisen können (z.B. Prädiktor-Korrektor-Verfahren, Blending-Verfahren)
+
+\subsubsection{Adams Verfahren}
+Man unterscheidet zwischen expliziten und impliziten Verfahren. Beide Varianten weisen ein ähnliches Konstruktionsprinzip auf.
+\begin{enumerate}
+	\item Schritt: Betrachte die Integralgleichung $y(t_{i+1})-y(t_{i})=\int_{t_{i}}^{t_{i+1}}f(t,y(t))dt$
+	\item Schritt: Ersetze $f$ durch ein Interpolationspolynom $p \in \mathcal{P}_{k-1}$ an den Stellen $t_{l}$ mit $f(t_{l},y^{l})$ mit $l\in I_{k}$
+	mit $|I_{k}|=k$. Ersetze zugleich $y(t_{l})$ durch $y^{l}$. $p(t_{l})=f(t_{l},y^{l})$ und $y^{i+1}=y^{i}+\int_{t_{i}}^{t_{i+1}}p(t)dt$
+\end{enumerate}
+
+Seien nun $L_{l}\in \mathcal{P}_{k-1},l\in I_{k}$ die Lagrange Interpolationspolynome. So gilt: $$p(t)=\sum_{l\in I_{k}}f(t_{l},y^{l})L_{l}(t)$$
+und $$y^{i+1}=y^{i}+\sum_{l\in I_{k}}\int_{t_{i}}^{t_{i+1}}L_{l}(t)f(t_{l},y^{l})dt$$
+d.h. für jedes Adams-Verfahren gilt: $a_{0}=1, a_{j}=0,j>0$
+
+\paragraph{Adams-Bashforth (ABV)}
+Bei der expliziten Variante wählt man, um ein $k$-Schritt Verfahren zu erhalten: $I_{k}=\{i,i-1,\ldots,i-(k-1)\}$
+
+Für äquidistante Knoten $t_{i+1}=t_{0}+ih$ gilt:
+$$\int_{t_{i}}^{t_{i+1}}L_{j}(t)dt = \int_{t_{i}}^{t_{i+1}}\prod_{l=0,l\not = j}^{k-1}\frac{t-t_{i-l}}{t_{i-j}-t_{i-l}}dt
+= \int_{0}^{h}\prod_{l=0,l\not = j}^{k-1}\frac{t+lh}{lh-jh}dt=h\int_{0}^{1}\prod_{l=0,l\not=j}^{k-1}\frac{t+l}{l-j}dt$$
+
+$k$-Schritt-Verfahren:
+$$y^{i+1}=y^{i}+h\sum_{j=0}^{k-1}b_{j}^{(k)}f_{i-j},\quad b_{j}^{(k)}=\int_{0}^{1}\prod_{l=0,l\not = j}^{k-1}\frac{t+l}{l-j}dt$$
+
+\begin{example}
+Beispiel: $k=2$:
+$$y^{i+1}=y^{i}+h(b_{0}^{(2)}f_{i}+b_{1}^{(2)}f_{i-1}),\quad b_{0}^{(2)}=\frac{3}{2},b_{1}^{(2)}=\frac{-1}{2}$$
+\end{example}
+
+\begin{remark}
+	Will man die Schrittzahl im Lauf des Zeitintervalls variieren, so ist eine Darstellung über die Newton'schen dvidierten Differenzen
+	empfehlenswert.
+	\begin{eqnarray*}
+	y^{i+1}&=&y^{i}+h\cdot \sum_{l=0}^{k-1}\mu_{l}\nabla^{l}f_{i}\\
+	\nabla^{0}f_{i}&=f_{i}\\
+	\nabla f_{i}&=&f_{i}\\
+	\nabla^{l} f_{i}&=&\nabla(\nabla^{l-1}f_{i})\\
+	\end{eqnarray*}
+\end{remark}
+
+\begin{example}
+ Beispiel $k=2$
+ \begin{eqnarray*}
+ 	y^{i+1}&=&y^{i}+h(\mu_{0}f_{i}+\mu_{1}(f_{i}-f_{i-1}))\\
+ 	y^{i+1}&=&y^{i}+h(\underbrace{b_{0}^{(2)}}_{=\frac{3}{2}}f_{i}+\underbrace{b_{1}^{(2)}}_{=-\frac{1}{2}}f_{i-1})\\
+ 	\mu_{1}&=&\frac{1}{2}\\
+ 	\mu_{0}&=&1
+ \end{eqnarray*}
+\end{example}
+
+\paragraph{Adams-Moulton (AMV)}
+Bei dieser impliziten Variante wählt man um ein $k$-Schritt Verfahren zu erhalten $I_{k+1}=\{i+1,\ldots,i-(k-1)\}$ und $p\in \mathcal{P}_{k}$
+(beim Adams-Bashforth-Verfahren ist das Polynom $p$ vom Grad $k-1$) Mit der analogen Vorgehensweise ergibt sich:
+$$y^{i+1}=y^{i}+h\sum_{j=-1}^{k-1}b_{j}^{(k)}f_{i-j},\quad b_{j}^{(k)}=\int_{0}^{1}\prod_{l=-1,l\not =j}^{k-1}\frac{t+l}{l-j}dt$$
+
+\begin{example}
+	Beispiel $k=2$ implizites 2 Schrittverfahren
+	\begin{eqnarray*}
+		b_{-1}^{(2)}&=&\int_{0}^{1}\frac{(t)(t+1)}{2}dt=\frac{5}{12}\\
+		b_{0}^{(2)}&=&\int_{0}^{1}(1-t)(1+t)dt=\frac{2}{3}\\
+		b_{1}^{(2)}&=&\int_{0}^{1}\frac{(t-1)t}{2}dt=\frac{-1}{12}
+	\end{eqnarray*}
+\end{example}
+
+Allgemein gilt: $\sum_{j=-1}^{k-1}b_{j}^{(k)}=1=\int_{0}^{1}\sum_{j=-1}^{k-1}L_{l}(x)dx$
+
+\begin{remark} AMV
+	\begin{enumerate}
+		\item Um die $b_{l}^{k}$ beim AMV zu erhalten, müssen Polynome vom Grad $k$ exakt integriert werden. Bei ABV dagegen Polynome
+		vom Grad $(k-1)$
+		\item Auch hier existiert eine Darstellung über Newton'sche dividierte Differenzen.
+		$$y^{i+1}=y^{i}+h\sum_{l=-1}^{k-1}\tilde\mu_{l}\nabla^{l+1}f_{i+1}$$
+	\end{enumerate}
+\end{remark}
+
+\subsubsection{BDF (Backward Differentiation Formula)}
+Beim BDF wird im Gegensatz zu den Adams-Variaten nicht $f$ durch ein Polynom approximiert, sondern die Lösung $y(t)$ selbst.
+
+Idee: Ersetze $y(t)$ durch ein Interpolationspolynom $p\in \mathcal{P}_{k}$ mit
+\begin{itemize}
+	\item $p(t_{i-j})=y_{i-j},\quad j=-1,0,\ldots,(k-1)$
+	\item $\dot p(t_{i+1}) =f_{i+1}$
+\end{itemize}
+
+Das liefert Verfahren der Gestalt:
+$$y^{i+1}=\sum_{j=0}^{k-1}a_{j}y^{i-j}+hb_{-1}f_{i+1}$$
+
+\begin{example}
+$k=2$
+\begin{eqnarray*}
+	p(t)&=&y_{i+1}\frac{(t-t_{i})(t-t_{i-1})}{(t_{i+1}-t_{i})(t_{i+1}-t_{i-1})} + y_{i}\frac{(t-t_{i+1})(t-t_{i-1})}{(t_{i}-t_{i+1})(t_{i}-t_{i-1})}
+	+y_{i-1}\frac{(t-t_{i+1})(t-t_{i})}{(t_{i-1}-t_{i+1})(t_{i-1}-t_{i})}\\
+	\dot p(t)&=&\frac{y_{i+1}}{2h^{2}}(2t-(t_{i}+t_{i-1})-\frac{y_{i}}{h^{2}}(2t-(t_{i-1}+t_{i+1}))+\frac{y_{i-1}}{2h^{2}}(2t-(t_{i}+t_{i+1}))\\
+	\dot p(t_{i+1})&=&\frac{y_{i+1}}{2h^{2}}\cdot 3h - \frac{y_{i}}{h^{2}}\cdot 2 h+\frac{y_{i-1}}{2h^{2}}h=f_{i+1}\\
+	y_{i+1}&=&\frac{4}{3}y_{i}-\frac{1}{3}y_{i-1}+\frac{2}{3}hf_{i+1}	
+\end{eqnarray*}
+\end{example}
+
+Achtung: Für $k>6$ sind die BDF nicht konvergent
+
+\subsubsection{Konvergenz von linearen MSV}
+
+\begin{example}
+$$y^{i+1}=4y^{i}-3y^{i-1}-2hf_{i-1}$$
+Wende das Verfahren an auf $\dot y =0,y^{0}=1,y^{1}=1+\epsilon h$
+\begin{eqnarray*}
+	y^{2}&=&4(1+\epsilon h)-3\cdot 1 = 1+4\epsilon h\\
+	y^{3}&=&4(1+4\epsilon h)-3(1+\epsilon h) = 1+13\epsilon h\\
+	y^{i}&=&1+\frac{3^{i}-1}{2}\epsilon h
+\end{eqnarray*}
+Sei $h=\frac{1}{N}$, dann gilt $y^{N}$ approximiert $y$ an der Stelle $t_{0}+1$ und $y^{N}\rightarrow \infty$ für $N\rightarrow \infty$
+\end{example}
