@@ -225,14 +225,14 @@ Das zentrale Hilsmittel zur Bestimmung der Konsistenzordnung ist die Taylorentwi
 			\begin{align*}
 				z(t+h,t,y) &= y+f h + \frac{1}{2} h^2 (f_t + f_yf) + \frac{1}{6} h^3(f_{tt} + f_{ty}f + f_{yt} f + f_{yy}f^2 + f_yf_t + f_y^2 f) + \OO{h^4} \\
 				\phi(t,h,y) &= \frac{1}{2} ( f(t,y) + f(T+h, y+hf(t,y))) \\
-				&= \frac{1}{2} (f + f + hf_t + h f f_y + \frac{1}{2} h^2 f_{tt} + \frac{1}{2} 2 h h f f_{ty} + \frac{1}{2} h^2 f^2 f_{yy} + \OO{h^3})
+				&= \frac{1}{2} (f + f + hf_t + h f f_y + \frac{1}{2} h^2 f_{tt} + \frac{1}{2}  h^{2} f f_{ty}+ \frac{1}{2}  h^{2} f f_{yt} + \frac{1}{2} h^2 f^2 f_{yy} + \OO{h^3})
 			\end{align*}
 			
 			Daraus folgt:
 			
 			\begin{align*}
 				\tau(t,y,h) = \frac{1}{h} &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf + \frac{1}{6} h^3 f_{tt} + \frac{1}{3} f_{ty}f + \frac{1}{6} h^3 f_{yy} f^2 + \frac{1}{6} f_yf_t + \frac{1}{6} h^3 f_y^2 f \\
-				- &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf + \frac{1}{4} h^3 ff_{ty} + \frac{1}{4} h^3 f^2f_{yy})) + \OO{h^3}
+				- &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf +\frac{1}{4}h^3 f_{tt}+ \frac{1}{2} h^3 ff_{ty} + \frac{1}{4} h^3 f^2f_{yy})) + \OO{h^3}
 			\end{align*}
 	\end{enumerate}
 \end{example}
@@ -270,7 +270,7 @@ Bei Einschrittverfahren existiert ein elementarer Zusammenhang zwischen Konsiste
 Im Gegensatz zu anderen Stabilitätsbegriffen wird bei der Null-Stabilität der Grenzwert $h \to 0$ betrachtet.
 
 \begin{theorem}
-	Sei $\phi$ eine Verfahrensfunktion eines expliziten Einschrittverfahrens mit $\phi$ Lipschitzstetig in $y$, so ist das Einschrittverfahren Null-stetig.
+	Sei $\phi$ eine Verfahrensfunktion eines expliziten Einschrittverfahrens mit $\phi$ Lipschitzstetig in $y$, so ist das Einschrittverfahren Null-stabil.
 \end{theorem}
 
 \begin{proof} wir betrachten den Spezialfall $h_i = h$. Definiere
@@ -408,3 +408,231 @@ Die Verfahren von Runge und Kutta sind Verallgemeinerungen der bisher betrachtet
 		
 	\end{enumerate}
 \end{example}
+
+\begin{theorem}
+	Konsistenz von RKV
+	\\
+	Ein RKV ist genau dann konsistent, falls
+	$$\sum_{j=1}^{s}\gamma_{j}=1$$
+\end{theorem}
+
+\begin{theorem}
+	Ordnungsschranke für explizite RKV
+	\\
+	Ein $s$-stufigeds RKV, welches explizit ist, hat die Ordnung $p\le s$
+\end{theorem}
+
+\begin{remark}
+	\begin{enumerate}
+		\item Es gibt keine Formel, die füë alle $p$ einen Zusammenhang zwischen $p$ und $s_{min}$ liefert (bei expliziten RKV)
+		\item Es gibt explizite RKV beliebig hoher Ordnung ($\rightarrow$ Extrapolationsschemata)
+	\end{enumerate}
+\end{remark}
+
+Im folgenden betrachten wir nur noch Verfahren mit $$\alpha_{j}=\sum_{l=1}^{s}\beta_{j,l}$$
+Motivation: Ein RKV ist invariant bezüglich der Transformation des AWP auf ein autonomes System (keine Zeitabhängigkeit der rechten
+Seite von der Zeit):
+
+$\dot y = f(t,y), y(t_{0})=y_{0}\Rightarrow \left ( \begin{array}{c}
+\dot y\\
+\dot z
+\end{array} \right ) = \left (
+\begin{array}
+{c}
+	f(z,y)\\
+	1
+\end{array} \right )$ mit $y(t_{0})=y_{0}$ und $z(t_{0})=t_{0}$
+genau dann, falls $\alpha_{j}=\sum_{l=1}^{s}\beta_{j,l}$ gilt.
+
+Daraus folgt, dass man noch $\frac{s(s-1)}{2}+(s-1)$ Freiheitsgrade hat.
+
+\begin{theorem}
+	Ordnungsgleichungen
+	\\
+	Gegeben sind folgende Gleichungen:
+	\begin{enumerate}
+		\item $\sum_{l=1}^{s}\gamma_{l}=1$
+		\item $\sum_{l=1}^{s}\gamma_{l}\alpha_{l}=\frac{1}{2}$
+		\item $\sum_{l=1}^{s}\gamma_{l}\alpha_{l}^{2}=\frac{1}{3}$
+		\item $\sum_{l,k}^{s}\gamma_{l}\beta_{l,k}\alpha_{k}=\frac{1}{6}$
+		\item $\sum_{l=1}^{s}\gamma_{l}\alpha_{l}^{3}=\frac{1}{4}$
+		\item $\sum_{l,k}^{s}\gamma_{l}\alpha_{l}\beta_{l,k}\alpha_{k}=\frac{1}{8}$
+		\item $\sum_{l,k}^{s}\gamma_{l}\beta_{l,k}\alpha_{k}^{2}=\frac{1}{12}$
+		\item $\sum_{l,k,j}^{s}\gamma_{l}\beta_{l,k}\beta_{k,j}\alpha_{j}=\frac{1}{24}$
+	\end{enumerate}
+	Dann gelten folgende Ordnungsaussagen:
+	\begin{itemize}
+		\item Gilt 1) $\Rightarrow p\ge 1$
+		\item Gelten 1) + 2) $\Rightarrow p\ge 2$
+		\item Gelten 1) - 4) $\Rightarrow p\ge 3$
+		\item Gelten 1) - 8) $\Rightarrow p \ge 4$
+	\end{itemize}
+\end{theorem}
+
+
+\begin{example}
+	\*
+	\begin{enumerate}
+		\item 2-stufiges explizites RKV der Ordnung $p=2$
+			$$\begin{array}{c|cc}
+				0 & 0 & 0\\
+				\alpha & \alpha & 0\\
+				\hline
+				  & 1-\frac{1}{2\alpha} & \frac{1}{2\alpha}
+			\end{array}$$
+		\item 2-stufiges implizites RKV der Ordnung $p=4$ (Hammer \& Hollingworth)
+			$$\begin{array}{c|cc}
+				\frac{1}{2} - \frac{1}{2}\sqrt{\frac{1}{3}} & \frac{1}{4} & \frac{1}{4} - \frac{1}{2}\sqrt{\frac{1}{3}}\\
+				\frac{1}{2} + \frac{1}{2}\sqrt{\frac{1}{3}} & \frac{1}{4} + \frac{1}{2}\sqrt{\frac{1}{3}} & \frac{1}{4}\\
+				\hline
+				  & \frac{1}{2} & \frac{1}{2}
+			\end{array}$$	
+		\item 4-stufige explizite RKV der Ordnug 4
+			\begin{itemize} 
+				\item $\frac{3}{8}$-Regel
+					$$\begin{array}{c|cccc}
+						0           &              &             &             & \\
+						\frac{1}{3} &  \frac{1}{3} &             &             & \\ 
+						\frac{2}{3} & -\frac{1}{3} &           1 &             & \\
+						1           &            1 &          -1 &           1 & \\ 
+						\hline
+						            &  \frac{1}{8} & \frac{3}{8} & \frac{3}{8} & \frac{1}{8}
+					\end{array}$$
+				\item Kuntzmann
+					$$\begin{array}{c|cccc}
+						0           &                &                 &                 & \\
+						\frac{2}{5} &    \frac{2}{5} &                 &                 & \\ 
+						\frac{3}{5} &  -\frac{3}{20} &     \frac{3}{4} &                 & \\
+						1           &  \frac{19}{44} &  -\frac{15}{44} &   \frac{40}{44} & \\ 
+						\hline
+						            & \frac{55}{360} & \frac{125}{360} & \frac{125}{360} & \frac{55}{360}
+					\end{array}$$
+			
+			\end{itemize}
+	\end{enumerate}
+\end{example}
+
+Frage: Wie können RKV höherer Ordnung konstruiert werden?
+\begin{enumerate}
+	\item Extrapolationstechniken ($\rightarrow$ explizite RKV)
+	\item Kollokationstechniken ($\rightarrow$ i.d.R. implizite RKV)
+\end{enumerate}
+
+\subsubsection{Kollokationsmethoden}
+
+Idee: Definiere ein Polynom $q_i$ vom Grad $\le s$ welches eine Anfangsbedingung und die DGL an $t_{ij}$ erfüllt. Suche $q_i \in \mathcal{P}_s([t_i, t_i + h_i])$ mit
+
+\begin{itemize}
+	\item $q_i(t_i) = y_i$
+	\item $\dot{q}_i(t_{ij}) = f(t_{ij}, q_i(t_ij))\;\;\;\;\;j=1,\dots,s\;\;\;\;\;\;t_{ij} \in [t_i, t_i + h_i]$
+\end{itemize}
+
+Setze $y_{i+1} = q_i(t_{i+1})$.
+
+Umsetzung: 
+
+$$\dot{q}_i \in \mathcal{P}_{s-1} \Rightarrow \dot{q}_i(t) = \sum_{l=1}^s k_l L_l(t)\;\;\;\;k_l = \dot{q}_i(t_i)$$
+$$L_l \in \mathcal{P}_{s-1}\left(\left[t_i, t_i + h_i\right]\right)\;\;\;\;\;\;\;\;\;\;L_l(t_{ij}) = \delta_{lj}$$
+
+Des Weiteren gilt:
+
+$$q_i(t) = \int_{t_i}^t\!\dot{q}_i(t) \operatorname{d}t + q_i(t_i)$$
+$$q_i(t_{ij}) = y_i + \sum_{l=1}^s k_i \int_{t_i}^{t_{ij}}\! L_l(t) \operatorname{d}t$$
+
+Seien $t_{ij} = 4_i + \alpha_j h_i$ mit $0 \le \alpha_1 < \alpha_2 < \dots < \alpha_s \le 1$.
+
+$$\Rightarrow q_i(t_{ij}) = y_i + \sum_{l=1}^s k_l \int_{0}^{\alpha_j}\! \hat{L}_l(t) \operatorname{d}t \cdot h_i$$
+
+mit 
+
+$$\hat{L}_l \in \mathcal{P}_{s-1}([0,1])\;\;\;\;\;\;\hat{L}_l = \delta_{lj}$$
+
+Setze für $\alpha_l, l = 1,\;\; \dots, s,\;\; 0 \le \alpha_1 < \alpha_2 < \dots < \alpha_s \le 1$:
+
+$$\gamma_l = \int_0^1\!\hat{L}_l(t)\operatorname{d}t$$
+$$\beta_{jl} = \int_0^{\alpha_j}\!\hat{L}_l(t)\operatorname{d}t$$
+
+Dann ist das Kollokationsverfahren äquivalent mit dem so definierten RKV.
+
+\begin{align*}
+	\dot{q}_i(t_{ij}) &= k_j = f(t_i + \alpha_j h_i, y_i + h_i \sum_{l=1}^s \beta_{jl} k_l)\\
+	y_{i+1} &= q_i(t_i + h_i) = y_i + h_i \sum_{l=1}^s \gamma_l k_l
+\end{align*}
+
+% 9. Juli 2010
+
+\begin{theorem}[Satz IV.7] Ordnung.
+
+	Seien $\alpha_j \in [0, 1]$ paarweise verschiedene Knoten einer Quadraturformel über $[0,1]$ mit den Gewichten $\gamma_j\;\;1 \le j \le s$, dann definiert die Wahl 
+
+	$$\beta_{jl} = \displaystyle\int_0^{\alpha_j}\!\hat{L}_l(t) \operatorname{d}t$$
+
+	ein RKV der Ordnung $p$, wobei $p-1$ der Exaktheitsgrad der Quadraturformel ist.
+\end{theorem}
+
+Beweisidee: Betrachte die Integralgleichung und verwende Satz I.1.
+
+\begin{example}\*
+	\begin{enumerate}
+		\item Trapezregel (Lobatho III.A)
+		
+			$$\begin{array}{c|cc}
+				0 & 0 & 0\\
+				1 & \frac{1}{2} & \frac{1}{2}\\
+				\hline
+				  & \frac{1}{2} & \frac{1}{2}
+			\end{array}$$
+		\item Radau I.A
+		
+			$$\begin{array}{c|cc}
+				0 & 0 & 0\\
+				\frac{2}{3} & \frac{1}{3} & \frac{1}{3}\\
+				\hline
+				  & \frac{1}{4} & \frac{3}{4}
+			\end{array}$$
+
+			\begin{align*}
+				\hat{L}_1(t) &= 1 - \frac{3}{2}t\\
+				\int_0^1\!\hat{L}_1(t) \operatorname{d}t &= \frac{1}{4}\\
+				\hat{L}_2(t) &= \frac{3}{2}t\\
+				\int_0^1\!\hat{L}_2(t) \operatorname{d}t &= \frac{3}{4}\\
+			\end{align*}
+			
+	\end{enumerate}
+\end{example}
+
+Folgerung: 
+\begin{enumerate}
+	\item Jedes Kolokationsverfahren der Stufe $s \ge 5$ ist implizit
+	\item Es existiert ein RKV der Stufe $s$ und der Ordnung $p=2s$ (Zusatz: Die maximal erreichbare Ordnung ist $2s$ und es gibt genau ein Verfahren der Ordnung $p=2s$)
+\end{enumerate}
+
+\subsubsection{Schrittweitensteuerung und eingebettete Runge-Kutta-Verfahren}
+
+Alle bisher gezeigten numerischen Ergebnisse basieren auf der Wahl $h_i = h$. Damit sind sie wenig effizient und werden so in der Praxis kaum verwendet.
+
+\paragraph{Schrittweitensteuerung}
+
+Vorüberlegung: Für den Fehler am Endzeitpunkt soll gelten:
+
+$$\|y(T) - y_{N_h}\| \le (T-t_o)\epsilon$$
+
+Die Stabilität garantiert, dass eine grobe Abschätzung erhalten wird durch Aufsummation der lokalen Fehler.
+
+$$\sum_{j=1}^{N_h-1} \| \delta(t_j, y_j, h_j) \|$$
+
+Fordert man nun 
+
+$$\|\delta(t_j, y_j, h_j)\| \le \epsilon h_j$$
+
+so ergibt sich
+
+$$\sum_{j=1}^{N_h-1} \|\delta(t_j, y_j, h_j)\| \le \epsilon (T-t_o)$$
+
+Achtung: $\delta(t_j, y_j, h_j)$ ist nicht berechenbar. Um $\delta(t_j, y_j, h_j)$ abschätzen zu können, wird eine zweite numerische Approximation benötigt.
+
+\begin{itemize}
+	\item 1. Möglichkeit: Verwende die gleiche Methode, aber 2 Schritte mit $h_j/2$ $\rightarrow$ aufwendig.
+	\item
+\end{itemize}
+
