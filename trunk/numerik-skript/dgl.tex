@@ -819,3 +819,74 @@ Wende das Verfahren an auf $\dot y =0,y^{0}=1,y^{1}=1+\epsilon h$
 \end{eqnarray*}
 Sei $h=\frac{1}{N}$, dann gilt $y^{N}$ approximiert $y$ an der Stelle $t_{0}+1$ und $y^{N}\rightarrow \infty$ für $N\rightarrow \infty$
 \end{example}
+
+\subsubsection{Null-Stabilität}
+\begin{definition}
+	[Definition IV.8] Ein lineares MSV heißt Nullstabil falls für alle $y^{0},\ldots,y^{k-1}$ mit $||y^{l}||\le 1$, $l=0,\ldots,k-1$ ein
+	$M<\infty$ existiert mit $||y^{i}||\le M$ wobei $y^{i}=\sum_{l=0}^{k-1}a_{l}y^{i-l}$ (Lösung von $\dot y(t)=0$)
+\end{definition}
+
+\begin{definition}
+	[Definition IV.9] Charakteristische Polynome
+	\\
+	\begin{enumerate}
+		\item 1. Charakteristisches Polynom: $\rho(r)=r^{k}-\sum_{l=0}^{k-1}a_{l}r^{k-1-l}$
+		\item 2. Charakteristisches Polynom: $\sigma(r)=b_{-1}r^{k}+\sum_{l=0}^{k-1}b_{l}Rr^{k-1-l}$
+	\end{enumerate}
+\end{definition}
+
+
+\begin{example}
+	\begin{enumerate}
+		\item Das vorherige Gegenbeispiel liefert: $\rho(r)=r^{2}-4r+3=(r-1)(r-3)$
+		\item Adams-Verfahren: $\rho(r)=r^{k}-r^{k-1}=r^{k-1}(r-1)$
+		\item BDF mit $k=2$: $\rho(r)=r^{2}-\frac{4}{3}r+\frac{1}{3} = (r-1)(r-\frac{1}{3})$
+	\end{enumerate}
+\end{example}
+
+\begin{theorem}
+	Wurzelbedingung
+	\\
+	Ein lineares MSV ist genau dann Null-stabil, falls die Wurzelbedingung erfüllt ist, d.h. alle Nullstellen $r_{i}$, $i=1,\ldots,k$
+	von $\rho(r)$ gilt:
+	\begin{enumerate}
+		\item $|r_{i}|\le 1$
+		\item Falls $|r_{i}|=1\Rightarrow \dot \rho(r_{i})\not = 0$ (d.h. wenn die Nullstelle auf dem Rand des Einheitskreises liegt, dann muss sie einfach sein)
+	\end{enumerate}
+\end{theorem}
+
+\subsubsection{Konsistenz}
+\begin{definition}
+	[Definition IV.10] ein lineares MSV heißt konsistent, von der Ordnung $p$, falls 
+	$$z(t_{i+1})-\sum_{j=0}^{k-1}a_{j}z(t_{i-j})-h(\sum_{j=-1}^{k-1}b_{j}\dot z(t_{i-j}))=O(h^{p+1})$$
+\end{definition}
+
+\begin{theorem}
+	Konsistenz
+	\\
+	\begin{enumerate}
+		\item Ein lineares MSV ist genau dann konsistent, falls $\sum_{j=0}^{k-1}a_{j}=1$ und $\sum_{j=0}^{k-1}(-j)a_{j}+\sum_{j=-1}^{k-1}b_{j}=1$
+		\item Es ist konsistent von der Ordnung $p$ genau dann, falls zusätzlich gilt: $\sum_{j=0}^{k-1}(-j)^{l}a_{j}+l\cdot \sum_{j=-1}^{k-1}(-j)^{l-1}b_{j}=1$ für $l=2,\ldots,p$
+	\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+	Konsistenz $\Leftrightarrow \rho(1)=0$
+\end{remark}
+
+\begin{theorem}
+	Konvergenz
+	\\
+	Sei die Lösung in $C^{p+1}$, so gilt für ein stabiles MSV der Konsistenzordnung $p$:
+	$$||y(t_{i}-y^{i}||\le C(h^{p}+\epsilon_{0})$$
+	für $i=1,\ldots,N_{k}$ und $h=\frac{T-t_{0}}{N_{h}}$ und $\epsilon_{0}=\max_{l=0,\ldots,k-1}||y(t_{l})-y^{l}||$
+\end{theorem}
+
+\begin{remark}
+ Dahlquist Kriterium: Die maximale Ordnung eines linearen stabilen $k$-Schritt Verfahrens ist 
+ $p=\begin{cases}
+ 	k+1&k \text{ ungerade}\\
+ 	k+2&k \text{ gerade}\\
+ 	k&\text{explizit}
+ \end{cases}$
+\end{remark}
