@@ -633,10 +633,41 @@ Achtung: $\delta(t_j, y_j, h_j)$ ist nicht berechenbar. Um $\delta(t_j, y_j, h_j
 
 \begin{itemize}
 	\item 1. Möglichkeit: Verwende die gleiche Methode, aber 2 Schritte mit $h_j/2$ $\rightarrow$ aufwendig.
-	\item
+	\item 2. Möglichkeit: Verwende ein 2. Verfahren mit $\hat{p} > p$
+		$$z(t_j + h_j) = y_{i+1} + c(t_j)h_j^{p+1} + O(h_j^{p+2})$$
+		$$z(z_j + h_j) = \hat{y}_{i+1} + \hat{c}(t_j)h_j^{\hat{p}+1} + O(h_j^{\hat{p}+2})$$
+		$$\Rightarrow \hat{y}_{i+1} - y_{i+1} = c(t_j) h_j^{p+1} + O(h_j^{p+2})$$
+		Und somit gilt in erster Näherung:
+		$$\|\delta(t_j, y_i, h_j)\| \approx \|s(h_j)\| := \|y_{i+1} - \hat{y}_{i+1}\|$$
 \end{itemize}
 
-%Fehlender Teil der Schrittweitensteuerung
+\paragraph{Grundalgorithmus zur Schrittweitensteuerung}
+\begin{align*}
+	&\text{Eingabe: } t_0, y_0, T, f_0, h_0\\
+	&\text{Parameter: } h_{min}, h_{max}, \alpha_{min}, \alpha_{max}, \beta\\
+	&j = 0, 1, 2, \dots\\
+	&\;\;t_{j+1} = t_j + h\\
+	&\;\;\text{Berechne } y_{i+1}, \hat{y}_{i+1} und s(h_j) = \hat{y}_{i+1} - y_{i+1}\\
+	&\;\;\text{Definiere } q(h_j) := \frac{\|s(h_j)\|}{s h_j}\\
+	&\;\;\alpha = max(\alpha_{min}, \frac{1}{\sqrt[\infty]{q(h_j)}}); \alpha = min(\alpha_{max}, \alpha)\\
+	&\;\;h_{neu} = max(h_{min}, \beta \alpha h_j); h_neu = min(h_{max}, h_{neu})\\
+	&\;\;\text{Falls } 
+\end{align*}
+
+\begin{itemize}
+	\item Falls $q(h_j) \le 1$ oder $h_j = h_{min}$, so akteptiere den Schritt.
+	\item Falls $t_{j+1} = T$, so ist $y^{(j+1)}$ die Approximation von $y(T)$.
+	\item Falls $t_{j+1} < T$, so gehe zu $j+1$ über und setze $h_{j+1} = min(h_{neu}, T - t_{j+1})$.
+	\item Falls $q(h_j) > 1$, so liegt ein Fehlversuch vor und der j-te Schritt wird wiederholt $h_j = h_{neu}$
+\end{itemize}
+
+Bemerkung:
+\begin{enumerate}
+	\item $\alpha_{max} \in [1.5, 2]$
+	\item $\alpha_{min} \in [0.2, 0.5]$
+	\item $\beta \in [0.9, 0.95]$
+	\item $h_{min}$ ist wichtig, um ein ``Festfressen'' zu verhindern!
+\end{enumerate}
 
 \begin{definition}
 	[Definition III.6] Ein explizites RKV$p(\hat p)$ hat die Form:
@@ -665,7 +696,7 @@ Achtung: $\delta(t_j, y_j, h_j)$ ist nicht berechenbar. Um $\delta(t_j, y_j, h_j
 	Damit eignen sich eingebettete RKV und insbesondere FSAL hervorragend zur Schrittweitensteuerung.
 	Viele frühe Varianten stammen von Fehlberg und sind RKV$p(p+1)$. Diese werden heute kaum noch verwendet, da:
 	\begin{itemize}
-		\item das Verfahren geringerer Ordnun liefert die Approximation
+		\item das Verfahren geringerer Ordnung liefert die Approximation
 		\item die Koeffizienten werden so bestimmt, dass der führende Fehlerterm der Ordnung $p$ minimiert wird $\Rightarrow$ Unterschätzung
 		des Fehlers $\Rightarrow$ zu optimistisches $h$
 	\end{itemize}
