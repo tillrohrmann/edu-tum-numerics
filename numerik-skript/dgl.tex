@@ -7,7 +7,7 @@ Die Behandlung von Differentialgleichungen spielt in der Numerik eine zentrale R
 \begin{example} 
 	Idealisiertes Pendel
 	\begin{align}
-		\nonumber m l \phi &= -m g sin(\phi)\\
+		\nonumber m l \phi &= -m g \sin(\phi)\\
 		\nonumber \phi(0) &= \alpha\\
 		\nonumber \dot{\phi}(0) &= 0
 	\end{align}
@@ -33,7 +33,7 @@ Die Behandlung von Differentialgleichungen spielt in der Numerik eine zentrale R
 	$y(t), t \in [t_0, T], y \in \mathbb{R}^n$ mit 
 	$$y^{(m)} = f(t, \dot{y}, \ddot{y}, ..., y^{(m-1)})$$
 	und
-	$$y(t_0) = t_0, \dot{y}(t_0) = z_1, ..., y^{(m-1})(t_0) = t_{m-1}.$$
+	$$y(t_0) = t_0, \dot{y}(t_0) = z_1, ..., y^{(m-1)}(t_0) = t_{m-1}.$$
 	
 	Dies definiert ein Anfangswertproblem m-ter Ordnung.
 \end{definition}
@@ -224,14 +224,14 @@ Das zentrale Hilsmittel zur Bestimmung der Konsistenzordnung ist die Taylorentwi
 			
 			\begin{align*}
 				z(t+h,t,y) &= y+f h + \frac{1}{2} h^2 (f_t + f_yf) + \frac{1}{6} h^3(f_{tt} + f_{ty}f + f_{yt} f + f_{yy}f^2 + f_yf_t + f_y^2 f) + \OO{h^4} \\
-				\phi(t,h,y) &= \frac{1}{2} ( f(t,y) + f(T+h, y+hf(t,y))) \\
+				\phi(t,h,y) &= \frac{1}{2} ( f(t,y) + f(t+h, y+hf(t,y))) \\
 				&= \frac{1}{2} (f + f + hf_t + h f f_y + \frac{1}{2} h^2 f_{tt} + \frac{1}{2}  h^{2} f f_{ty}+ \frac{1}{2}  h^{2} f f_{yt} + \frac{1}{2} h^2 f^2 f_{yy} + \OO{h^3})
 			\end{align*}
 			
 			Daraus folgt:
 			
 			\begin{align*}
-				\tau(t,y,h) = \frac{1}{h} &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf + \frac{1}{6} h^3 f_{tt} + \frac{1}{3} f_{ty}f + \frac{1}{6} h^3 f_{yy} f^2 + \frac{1}{6} f_yf_t + \frac{1}{6} h^3 f_y^2 f \\
+				\tau(t,y,h) = \frac{1}{h} &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf + \frac{1}{6} h^3 f_{tt} + \frac{1}{3} h^{3} f_{ty}f + \frac{1}{6} h^3 f_{yy} f^2 + \frac{1}{6} f_yf_t + \frac{1}{6} h^3 f_y^2 f \\
 				- &(y + hf + \frac{1}{2} h^2 f_t + \frac{1}{2} h^2 f_yf +\frac{1}{4}h^3 f_{tt}+ \frac{1}{2} h^3 ff_{ty} + \frac{1}{4} h^3 f^2f_{yy})) + \OO{h^3}
 			\end{align*}
 	\end{enumerate}
@@ -280,7 +280,7 @@ Im Gegensatz zu anderen Stabilitätsbegriffen wird bei der Null-Stabilität der 
 	so gilt:
 	\begin{align*}
 		w_{i+1} &= w_i + h(\underbrace{\phi(t_i, h, z_i) - \phi(t_i, h, y_i)}_{\le L \|z_i - y_i\| = L \|w_i\|} + \delta_{i+1})\\
-		\|w_{i+1}\| &\le (1 + hL) \|w_i\| + h\|\delta{i+1}\| \\
+		\|w_{i+1}\| &\le (1 + hL) \|w_i\| + h\|\delta_{i+1}\| \\
 		& \le (1+hL)\|w_i\| + h\epsilon
 	\end{align*}
 	
@@ -323,7 +323,7 @@ Faustregel: Konsistenz + Stabilität = Konvergenz.
 \begin{remark}
 	Die theoretischen Ergebnisse berücksichtigen keine Rundungsfehler. Das heißt
 	
-	$$y_{i+1} = y_{i} + h_i \left(\phi\left(h, h_i, y_i\right) + \underbrace{eps}_{Maschinengenauigkeit} / h_i \right)$$
+	$$y_{i+1} = y_{i} + h_i \left(\phi\left(t_i, h_i, y_i\right) + \underbrace{eps}_{Maschinengenauigkeit} / h_i \right)$$
 	
 	unter Berücksichtigung von Rundungsfehlern:
 	
@@ -379,10 +379,11 @@ Die Verfahren von Runge und Kutta sind Verallgemeinerungen der bisher betrachtet
 		
 		\item Die kompakte Matrixdarstellung 
 		
-		$$\begin{array}{cccc}
+		$$\begin{array}{c|ccc}
 			\alpha_1 & \beta_{11} & \dots & \beta_{1s} \\
 			\vdots   & \vdots     &       & \vdots \\
 			\alpha_s & \beta_{s1} & \dots & \beta_{ss} \\
+			\hline
 			         & \gamma_{1} & \dots & \gamma_{s} 
 		\end{array}$$
 		
@@ -424,7 +425,7 @@ Die Verfahren von Runge und Kutta sind Verallgemeinerungen der bisher betrachtet
 
 \begin{remark}
 	\begin{enumerate}
-		\item Es gibt keine Formel, die füë alle $p$ einen Zusammenhang zwischen $p$ und $s_{min}$ liefert (bei expliziten RKV)
+		\item Es gibt keine Formel, die für alle $p$ einen Zusammenhang zwischen $p$ und $s_{min}$ liefert (bei expliziten RKV)
 		\item Es gibt explizite RKV beliebig hoher Ordnung ($\rightarrow$ Extrapolationsschemata)
 	\end{enumerate}
 \end{remark}
@@ -524,7 +525,7 @@ Idee: Definiere ein Polynom $q_i$ vom Grad $\le s$ welches eine Anfangsbedingung
 
 \begin{itemize}
 	\item $q_i(t_i) = y_i$
-	\item $\dot{q}_i(t_{ij}) = f(t_{ij}, q_i(t_ij))\;\;\;\;\;j=1,\dots,s\;\;\;\;\;\;t_{ij} \in [t_i, t_i + h_i]$
+	\item $\dot{q}_i(t_{ij}) = f(t_{ij}, q_i(t_{ij}))\;\;\;\;\;j=1,\ldots,s\;\;\;\;\;\;t_{ij} \in [t_i, t_i + h_i]$
 \end{itemize}
 
 Setze $y_{i+1} = q_i(t_{i+1})$.
@@ -539,7 +540,7 @@ Des Weiteren gilt:
 $$q_i(t) = \int_{t_i}^t\!\dot{q}_i(t) \operatorname{d}t + q_i(t_i)$$
 $$q_i(t_{ij}) = y_i + \sum_{l=1}^s k_i \int_{t_i}^{t_{ij}}\! L_l(t) \operatorname{d}t$$
 
-Seien $t_{ij} = 4_i + \alpha_j h_i$ mit $0 \le \alpha_1 < \alpha_2 < \dots < \alpha_s \le 1$.
+Seien $t_{ij} = t_i + \alpha_j h_i$ mit $0 \le \alpha_1 < \alpha_2 < \dots < \alpha_s \le 1$.
 
 $$\Rightarrow q_i(t_{ij}) = y_i + \sum_{l=1}^s k_l \int_{0}^{\alpha_j}\! \hat{L}_l(t) \operatorname{d}t \cdot h_i$$
 
@@ -635,7 +636,7 @@ Achtung: $\delta(t_j, y_j, h_j)$ ist nicht berechenbar. Um $\delta(t_j, y_j, h_j
 	\item 1. Möglichkeit: Verwende die gleiche Methode, aber 2 Schritte mit $h_j/2$ $\rightarrow$ aufwendig.
 	\item 2. Möglichkeit: Verwende ein 2. Verfahren mit $\hat{p} > p$
 		$$z(t_j + h_j) = y_{i+1} + c(t_j)h_j^{p+1} + O(h_j^{p+2})$$
-		$$z(z_j + h_j) = \hat{y}_{i+1} + \hat{c}(t_j)h_j^{\hat{p}+1} + O(h_j^{\hat{p}+2})$$
+		$$z(t_j + h_j) = \hat{y}_{i+1} + \hat{c}(t_j)h_j^{\hat{p}+1} + O(h_j^{\hat{p}+2})$$
 		$$\Rightarrow \hat{y}_{i+1} - y_{i+1} = c(t_j) h_j^{p+1} + O(h_j^{p+2})$$
 		Und somit gilt in erster Näherung:
 		$$\|\delta(t_j, y_i, h_j)\| \approx \|s(h_j)\| := \|y_{i+1} - \hat{y}_{i+1}\|$$
@@ -755,7 +756,7 @@ d.h. für jedes Adams-Verfahren gilt: $a_{0}=1, a_{j}=0,j>0$
 \paragraph{Adams-Bashforth (ABV)}
 Bei der expliziten Variante wählt man, um ein $k$-Schritt Verfahren zu erhalten: $I_{k}=\{i,i-1,\ldots,i-(k-1)\}$
 
-Für äquidistante Knoten $t_{i+1}=t_{0}+ih$ gilt:
+Für äquidistante Knoten $t_{i}=t_{0}+ih$ gilt:
 $$\int_{t_{i}}^{t_{i+1}}L_{j}(t)dt = \int_{t_{i}}^{t_{i+1}}\prod_{l=0,l\not = j}^{k-1}\frac{t-t_{i-l}}{t_{i-j}-t_{i-l}}dt
 = \int_{0}^{h}\prod_{l=0,l\not = j}^{k-1}\frac{t+lh}{lh-jh}dt=h\int_{0}^{1}\prod_{l=0,l\not=j}^{k-1}\frac{t+l}{l-j}dt$$
 
@@ -773,7 +774,7 @@ $$y^{i+1}=y^{i}+h(b_{0}^{(2)}f_{i}+b_{1}^{(2)}f_{i-1}),\quad b_{0}^{(2)}=\frac{3
 	\begin{eqnarray*}
 	y^{i+1}&=&y^{i}+h\cdot \sum_{l=0}^{k-1}\mu_{l}\nabla^{l}f_{i}\\
 	\nabla^{0}f_{i}&=f_{i}\\
-	\nabla f_{i}&=&f_{i}\\
+	\nabla f_{i}&=&f_{i}-f_{i-1}\\
 	\nabla^{l} f_{i}&=&\nabla(\nabla^{l-1}f_{i})\\
 	\end{eqnarray*}
 \end{remark}
@@ -862,7 +863,7 @@ Sei $h=\frac{1}{N}$, dann gilt $y^{N}$ approximiert $y$ an der Stelle $t_{0}+1$ 
 	\\
 	\begin{enumerate}
 		\item 1. Charakteristisches Polynom: $\rho(r)=r^{k}-\sum_{l=0}^{k-1}a_{l}r^{k-1-l}$
-		\item 2. Charakteristisches Polynom: $\sigma(r)=b_{-1}r^{k}+\sum_{l=0}^{k-1}b_{l}Rr^{k-1-l}$
+		\item 2. Charakteristisches Polynom: $\sigma(r)=b_{-1}r^{k}+\sum_{l=0}^{k-1}b_{l}r^{k-1-l}$
 	\end{enumerate}
 \end{definition}
 

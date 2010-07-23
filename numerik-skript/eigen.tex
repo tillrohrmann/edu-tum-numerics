@@ -21,12 +21,13 @@ Im folgenden gilt: $A=A^{T}$ und $A\in \mathbb{R}^{n\times n}$
 \begin{theorem}
 	[Satz II.1] Konvergenz der Vektoriteration
 	\\
-	F$$||sgn(\lambda_{1})^{k}\cdot x_{k} - v_{1}||_{2} \leq C_{1}(x^{0})\cdot | \frac{\lambda_{2}}{\lambda_{1}}|^{k}\quad 
-	\text{falls} x^{0}\cdot v_{1}>0$$ür die EW von $A$ gelte: $|\lambda_{1}| > |\lambda_{2}| \geq |\lambda_{3}| \geq \ldots \geq |\lambda_{n}|$
-	und der Startvektor $x^{0}$ der Vektoriteration erfülle $x^{0} \not \in span{v_{2},\ldots,v_{n}}$ so gilt folgende
+	Für die EW von $A$ gelte: $|\lambda_{1}| > |\lambda_{2}| \geq |\lambda_{3}| \geq \ldots \geq |\lambda_{n}|$
+	und der Startvektor $x^{0}$ der Vektoriteration erfülle $x^{0} \not \in span\{v_{2},\ldots,v_{n}\}$ so gilt folgende
 	Konvergenzordnung:
 	$$||-sgn(\lambda_{1})^{k}\cdot x_{k} - v_{1}||_{2} \leq C_{1}(x^{0})\cdot | \frac{\lambda_{2}}{\lambda_{1}}|^{k}\quad 
-	\text{falls} x^{0}\cdot v_{1}<0$$
+	\text{ falls } x^{0}\cdot v_{1}<0$$
+	$$||sgn(\lambda_{1})^{k}\cdot x_{k} - v_{1}||_{2} \leq C_{1}(x^{0})\cdot | \frac{\lambda_{2}}{\lambda_{1}}|^{k}\quad 
+	\text{ falls } x^{0}\cdot v_{1}>0$$
 	$$|\lambda_{1}-\lambda^{k}| \leq C_{2}(x^{0})\cdot | \frac{\lambda_{2}}{\lambda_{1}}|^{2k}$$
 \end{theorem}
 
@@ -65,7 +66,7 @@ Grundidee: Wende Vektoriteration auf die Matrix $(A-\mu Id)^{-1}$ an.
 			$$\frac{\alpha_{k}}{1-\alpha_{k}}\cdot (\lambda^{k}-\lambda^{k-1})\text{ mit } \alpha_{k}=\frac{\lambda^{k}-\lambda^{k-1}}{\lambda^{k-1}-\lambda^{k-2}}$$
 		\end{itemize}
 		\item Spezialfall $m=1$ quadratische Konvergenz
-		$$|\lambda^{k+1}-\lambda_{i_{0}}|\leq C \cdot |\lambda^{k}-\lambda_{i_{0}}|$$
+		$$|\lambda^{k+1}-\lambda_{i_{0}}|\leq C \cdot |\lambda^{k}-\lambda_{i_{0}}|^{2}$$
 	\end{enumerate}
 \end{remark}
 
@@ -116,7 +117,7 @@ Des Weiteren wird gefordert, dass für die ONM $V$ der EV, d.h. $A=V\Lambda V^{-
 		\item Die Voraussetzung $|\lambda_{n}|>0$ und die Existenz einer LU-Zerlegung von $\tilde V^{-1}$ sind nicht notwendig
 		\item QR Zerlegung funktioniert auch bei mehrfachen EW
 		\item QR Zerlegung funktioniert auch mit diagonalisierbaren Matrizen mit reellen EW. $A_{k}$  ist dann eine obere Dreiecksmatrix
-		\item Falls $\lambda_{i}=-lambda_{j}$, so gilt i.d.R, dass die QR Zerlegung nicht konvergiert.
+		\item Falls $\lambda_{i}=-\lambda_{i+1}$, so gilt i.d.R, dass die QR Zerlegung nicht konvergiert.
 		\item QR Zerlegung hat den Aufwand $O(n^{3})$
 		\item Wenn die EW betragsmäßig nahe beisammen liegen, so erhält man eine langsame Konvergenz
 	\end{enumerate}
@@ -145,7 +146,7 @@ einer symmetrischen Hessenberg-Matrix $O(1)$. Damit kostet die QR Zerlegung $O(n
 \end{theorem}
 
 \begin{theorem}
-	[Satz II.5] Jede Matrix $A$ kann durch Ähnlichkeitstransformationen mit orthonormalen Matrixen in Hssenberg-Form überführt werden.
+	[Satz II.5] Jede Matrix $A$ kann durch Ähnlichkeitstransformationen mit orthonormalen Matrizen in Hessenberg-Form überführt werden.
 	Der Aufwand hierfür ist $O(n^{3})$.
 \end{theorem}
 
