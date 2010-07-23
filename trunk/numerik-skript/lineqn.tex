@@ -54,7 +54,7 @@ $$x^{k+1}=x^{k}+N(b-Ax^{k})$$, d.h. $M=(Id-NA)$
 			$$x^{k+1}=x^{k} + D^{-1}(b-Ax^{k}),\quad N=D^{-1},\quad M=-D^{-1}(L+U)$$
 			$$x_{l}^{k+1}=x_{l}^{k}+\frac{(b_{l}-\sum_{i=1}^{n}a_{l,i}\cdot x_{i}^{k})}{a_{l,l}}$$
 		\item[Gauß-Seidel-Verfahren]
-			$$x^{k+1}=x^{k}+(D+L)^{-1}(b-Ax^{k},\quad N=(D+L)^{-1},\quad M=-(D+L)^{-1}U$$
+			$$x^{k+1}=x^{k}+(D+L)^{-1}(b-Ax^{k}),\quad N=(D+L)^{-1},\quad M=-(D+L)^{-1}U$$
 			$$x_{l}^{k+1}=x_{l}^{k}+\frac{(b_{l}-(\sum_{i=1}^{l-1}a_{l,i}\cdot x_{i}^{k+1} + \sum_{i=l}^{n}a_{l,i}\cdot x_{i}^{k}))}{a_{l,l}}$$
 		\item[SOR-Verfahren]
 			$$x^{k+1}=x^{k} + w(D+wL)^{-1}(b-Ax^{k}),\quad N=w(D+wL)^{-1}$$
@@ -99,11 +99,11 @@ $$x^{k+1}=x^{k}+N(b-Ax^{k})$$, d.h. $M=(Id-NA)$
 \begin{theorem}
 	Konvergenzrate
 	\\
-	Sei $A$ symmetrisch positiv definit und $0<w<2$. Des Weiterne wird gefordert, dass die Eigenwerte der Matrix $B(z)=zD^{-1}L+\frac{1}{z}D^{-1}U$
-	unabhängig von $z\in \mathbb{C}\\ \{0\}$ sind. Dann gilt:
+	Sei $A$ symmetrisch positiv definit und $0<w<2$. Des Weiteren wird gefordert, dass die Eigenwerte der Matrix $B(z)=zD^{-1}L+\frac{1}{z}D^{-1}U$
+	unabhängig von $z\in \mathbb{C}\setminus\{0\}$ sind. Dann gilt:
 	\begin{enumerate}
 		\item $\rho(M_{Jac})=:\beta<1$
-		\item $\rho(M_{GS})=\rho(M_{Jac})^{2}$ (d.h. das Gauß-Seidel-Verfahren benötigt habl so viele Schritte wie das Jacobi-Verfahren)
+		\item $\rho(M_{GS})=\rho(M_{Jac})^{2}$ (d.h. das Gauß-Seidel-Verfahren benötigt halb so viele Schritte wie das Jacobi-Verfahren)
 		\item $\rho(M_{SOR,w})=
 		\begin{cases}
 		w-1 & w_{opt}\leq w<2\\
@@ -224,8 +224,8 @@ Grundidee:
 \begin{remark}
 	Orthogonalitäten:
 	\begin{itemize}
-		\item $\langle r^{k+1}, p^{k}\rangle$
-		\item $\langle p^{k+1},Ap^{k}\rangle$
+		\item $\langle r^{k+1}, p^{k}\rangle=0$
+		\item $\langle p^{k+1},Ap^{k}\rangle=0$
 	\end{itemize}
 \end{remark}
 
@@ -277,7 +277,7 @@ Grundidee:
 Sei $A$ symmetrisch positiv definit mit $\kappa(A)>>1$ und $B$ sei symmetrisch positiv definit mit $\kappa(AB)<<\kappa(A)$. Dann
 ist
 \begin{enumerate}
-	\item $Ax=b \Leftrightarrow B^{\frac{1}{2}}AB^{\frac{1}{2}}y=B^{\frac{1}{2}}b\quad x=B^{\frac{1}{2}}$
+	\item $Ax=b \Leftrightarrow B^{\frac{1}{2}}AB^{\frac{1}{2}}y=B^{\frac{1}{2}}b\quad x=B^{\frac{1}{2}}y$
 	\item Die Konvergenz des CG-Verfahren angewendet auf $B^{\frac{1}{2}}AB^{\frac{1}{2}}y=B^{\frac{1}{2}}b$ ist deutlich schneller als
 	das CG-Verfahren angewandt auf $Ax=b$
 \end{enumerate}
